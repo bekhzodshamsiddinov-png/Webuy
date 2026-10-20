@@ -11,6 +11,10 @@ Qurilish loyihasi uchun interaktiv 3D sayt namunasi. Xaridor sichqoncha g'ildira
 
 Pastda xonadon rejalari, narxlar va ko'rishga yozilish formasi bor.
 
+**Jonli sayt:** https://bekhzodshamsiddinov-png.github.io/Webuy/
+
+Sayt GitHub Pages orqali `gh-pages` branch'idan chiqadi. O'zgarishlar `main`ga push qilingandan keyin `gh-pages`ga ham push qilinadi: `git push origin main main:gh-pages`.
+
 > Hozirgi bino, lobbi va kvartira kod bilan chizilgan namunaviy model. "Sadaf Residence" nomi, narxlar va maydonlar shartli. Real loyihada ular buyurtmachining 3D modeli va ma'lumotlari bilan almashtiriladi.
 
 ## Tuzilishi
