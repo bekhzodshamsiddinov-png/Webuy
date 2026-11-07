@@ -15,13 +15,19 @@ Pastda xonadon rejalari, narxlar va ko'rishga yozilish formasi bor.
 
 Sayt GitHub Pages orqali `gh-pages` branch'idan chiqadi. O'zgarishlar `main`ga push qilingandan keyin `gh-pages`ga ham push qilinadi: `git push origin main main:gh-pages`.
 
-> Hozirgi bino, lobbi va kvartira kod bilan chizilgan namunaviy model. "Sadaf Residence" nomi, narxlar va maydonlar shartli. Real loyihada ular buyurtmachining 3D modeli va ma'lumotlari bilan almashtiriladi.
+> Bosh sahifa (`index.html`) loyihaning haqiqiy renderlari va animatsiyalari asosida qurilgan. `tour.html` — kod bilan chizilgan namunaviy 3D xonadon sayohati.
+>
+> **Loyiha nomi, telefon, manzil** `index.html` ichidagi `PROJECT` obyektida turadi; o'sha yerda o'zgartiriladi. Qavat tanlashdagi xonadonlar holati hozircha namuna.
 
 ## Tuzilishi
 
 | Fayl | Vazifasi |
 |---|---|
-| `index.html` | Butun sayt: dizayn, 3D sahna, kamera yo'li, 360° rejim, forma |
+| `index.html` | Bosh sahifa: video hero, scroll bilan boshqariladigan 2 ta film, bino turlari, qavat tanlash, infratuzilma videolari, galereya, forma |
+| `tour.html` | Namunaviy 3D sayohat: bino, lobbi, lift, xonadon, 360° rejim |
+| `assets/img/` | Renderlar: `*.webp` (1100 px) va `*-xl.webp` (2400 px, galereya uchun) |
+| `assets/vid/` | Animatsiyalar (H.264, 1600 px) va ularning poster rasmlari |
+| `assets/seq/` | Scroll filmlari uchun kadrlar ketma-ketligi (WebP, 20 kadr/s) |
 | `vendor/three/` | three.js r160 (MIT), tashqi CDN'ga bog'liq bo'lmasligi uchun repo ichida |
 
 Build kerak emas: oddiy statik sayt. Lokal ishga tushirish uchun:

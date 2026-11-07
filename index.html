@@ -3,833 +3,615 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Sadaf Residence — 3D sayohat: bulutlardan binoga, lobbiga va xonadon ichiga. Xonalarni 360° aylanib ko'ring.">
-<meta property="og:title" content="Sadaf Residence — 3D xonadon ko'rinishi">
-<meta property="og:description" content="Binoga kiring, liftda chiqing va xonadonni 360° aylanib ko'ring.">
-<meta name="theme-color" content="#0c0f14">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c0f14'/%3E%3Cpath d='M11 26V8h10v18' fill='none' stroke='%23c9a46b' stroke-width='2'/%3E%3Cpath d='M14 12h4M14 16h4M14 20h4' stroke='%23c9a46b' stroke-width='1.6'/%3E%3C/svg%3E">
 <title>Sadaf Residence</title>
+<meta name="description" content="12 va 16 qavatli turar-joy majmuasi: yopiq hovli, bolalar maydonchasi, birinchi qavatda do'konlar. Uylarni, hovlini va qavatlarni onlayn ko'ring.">
+<meta property="og:title" content="Sadaf Residence">
+<meta property="og:description" content="12 va 16 qavatli turar-joy majmuasi. Hovli, uylar va qavatlarni onlayn ko'ring.">
+<meta property="og:image" content="assets/img/b12a-lawn.webp">
+<meta name="theme-color" content="#1b1c1e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1c1e'/%3E%3Cpath d='M10 26V7h12v19' fill='none' stroke='%23b08a57' stroke-width='2'/%3E%3Cpath d='M13 11h6M13 15h6M13 19h6' stroke='%23b08a57' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="assets/vid/hero.jpg">
 <style>
-/* Layout: full-screen WebGL stage driven by scroll, captions float bottom-left, stage rail on the right; normal page sections after the flight */
+/* Layout: full-bleed cinematic media bands (hero, two scroll-scrubbed films) alternating with calm stone-paper editorial sections */
 :root{
-  --ink:#0c0f14;      /* night ground */
-  --night:#141922;    /* raised surface */
-  --stone:#ece5d9;    /* travertine text */
-  --mist:#a49d93;     /* muted text */
-  --brass:#c9a46b;    /* accent */
-  --glass:#8aaecb;    /* secondary */
-  --line:rgba(236,229,217,.16);
-  --display:"Italiana", "Didot", "Bodoni 72", Georgia, serif;
-  --body:"Manrope", "Segoe UI", system-ui, sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
-  color-scheme:dark;
+  --paper:#eeebe5;   /* light stucco of the facade */
+  --paper2:#e5e0d7;
+  --ink:#1b1c1e;     /* graphite of window frames */
+  --ink2:#2a2b2e;
+  --muted:#6f695f;
+  --bronze:#a8834f;  /* balcony lattice bronze */
+  --bronze-l:#c7a06a;
+  --brick:#6b5446;
+  --line:rgba(27,28,30,.14);
+  --line-d:rgba(238,235,229,.16);
+  --display:"Marcellus","Trajan Pro",Georgia,serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gut:max(20px,env(safe-area-inset-left,0px));
+  --gutR:max(20px,env(safe-area-inset-right,0px));
+  color-scheme:light;
 }
-html,body{background:var(--ink);color:var(--stone);font-family:var(--body);}
-body{font-size:15px;line-height:1.6;overflow-x:hidden}
-html.pano, html.pano body{overflow:hidden}
-#scene{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;outline:none}
-html.pano #scene{touch-action:none;cursor:grab}
-html.pano #scene:active{cursor:grabbing}
-#scene.hovering{cursor:pointer}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.65 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video,canvas{display:block;max-width:100%}
+a{color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gutR)}
+.eyebrow{font:500 11px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--bronze);display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.01em;text-wrap:balance;margin:0}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:2px;border:1px solid currentColor;font:500 13px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;background:transparent;color:inherit;transition:background .25s,color .25s,border-color .25s;white-space:nowrap}
+.btn.fill{background:var(--bronze);border-color:var(--bronze);color:#fff}
+.btn.fill:hover{background:var(--ink);border-color:var(--ink)}
+.btn.ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn svg{width:16px;height:16px}
 
 /* nav */
-.nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:14px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  background:linear-gradient(to bottom,rgba(12,15,20,.55),rgba(12,15,20,0));pointer-events:none}
-.nav > *{pointer-events:auto}
-.brand{font-family:var(--display);font-size:24px;letter-spacing:.32em;color:var(--stone);text-decoration:none;white-space:nowrap}
-.brand small{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--brass);margin-left:10px;vertical-align:middle}
-.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:13px;letter-spacing:.06em}
-.nav a{color:var(--stone);text-decoration:none;opacity:.85}
-.nav a:hover{opacity:1;color:var(--brass)}
-.btn{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--brass);color:var(--stone);background:rgba(12,15,20,.35);
-  padding:10px 18px;border-radius:999px;font:500 13px/1 var(--body);letter-spacing:.05em;cursor:pointer;text-decoration:none;backdrop-filter:blur(6px);white-space:nowrap}
-.btn:hover{background:var(--brass);color:var(--ink)}
-.btn.solid{background:var(--brass);color:var(--ink)}
-.btn.solid:hover{background:var(--stone)}
-:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
-@media (max-width:860px){.nav ul{display:none}}
-@media (max-width:480px){.nav .btn{padding:8px 12px;font-size:12px}.brand{font-size:20px}.brand small{display:none}}
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:16px;padding-left:var(--gut);padding-right:var(--gutR);
+  color:#fff;transition:background .35s,color .35s,padding .35s,box-shadow .35s}
+.nav.solid{background:rgba(238,235,229,.92);color:var(--ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line);padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo svg{width:30px;height:30px}
+.logo b{font:400 21px/1 var(--display);letter-spacing:.24em}
+.logo small{display:block;font:500 9px/1 var(--mono);letter-spacing:.3em;opacity:.7;margin-top:5px}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:13.5px;letter-spacing:.04em}
+.nav ul a{text-decoration:none;opacity:.85}
+.nav ul a:hover{opacity:1;color:var(--bronze-l)}
+.nav.solid ul a:hover{color:var(--bronze)}
+.nav .btn{padding:11px 18px}
+.nav:not(.solid) .btn{border-color:rgba(255,255,255,.6)}
+.nav:not(.solid) .btn:hover{background:#fff;color:var(--ink)}
+.nav.solid .btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.menu{display:none;background:none;border:0;color:inherit;padding:8px;cursor:pointer}
+.menu svg{width:26px;height:26px}
+@media (max-width:1020px){.nav ul{display:none}.menu{display:block}.nav .btn{display:none}
+  .nav.open ul{display:flex;flex-direction:column;gap:6px;position:absolute;top:100%;left:0;right:0;background:var(--paper);color:var(--ink);padding:16px var(--gutR) 24px var(--gut);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+  .nav.open ul a{display:block;padding:10px 0;font-size:17px;border-bottom:1px solid var(--line)}}
 
-/* HUD */
-#hud{position:fixed;inset:0;z-index:3;pointer-events:none}
-#hud::before{content:"";position:absolute;inset:0;background:radial-gradient(110% 75% at 0% 100%,rgba(8,10,14,.68),rgba(8,10,14,.25) 45%,rgba(8,10,14,0) 70%)}
-@media (max-width:640px){#hud::before{background:linear-gradient(to top,rgba(8,10,14,.85),rgba(8,10,14,.45) 42%,rgba(8,10,14,0) 68%)}}
-.cap{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(9vh + env(safe-area-inset-bottom,0px));max-width:min(560px,calc(100% - 32px));
-  opacity:0;transform:translateY(16px);will-change:opacity,transform;text-shadow:0 1px 3px rgba(0,0,0,.35),0 2px 22px rgba(0,0,0,.5)}
-@media (min-width:861px){.cap{left:max(56px,env(safe-area-inset-left,0px))}}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);display:flex;gap:12px;align-items:center}
-.eyebrow::before{content:"";width:28px;height:1px;background:var(--brass)}
-.cap h1,.cap h2{font-family:var(--display);font-weight:400;line-height:1;margin:.25em 0 .3em;text-wrap:balance;letter-spacing:.01em}
-.cap h1{font-size:clamp(52px,9vw,128px)}
-.cap h2{font-size:clamp(38px,5.6vw,76px)}
-.cap p{margin:0;color:var(--stone);opacity:.9;max-width:44ch;font-weight:300;font-size:16px}
-.specs{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--stone)}
-.specs b{display:block;font-family:var(--display);font-weight:400;font-size:28px;letter-spacing:.02em;color:var(--stone)}
-.specs span{color:var(--mist);letter-spacing:.08em;text-transform:uppercase;font-size:10.5px}
-.cap .btn{pointer-events:auto;margin-top:18px}
-.cap.on{pointer-events:auto}
-
-.hint{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--stone);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:.85}
-.hint i{width:1px;height:42px;background:linear-gradient(var(--stone),transparent);animation:drip 2.2s ease-in-out infinite}
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;color:#fff;overflow:hidden;background:#2a2b2e}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,16,18,.45) 0%,rgba(15,16,18,0) 28%,rgba(15,16,18,0) 45%,rgba(15,16,18,.78) 100%)}
+.hero .in{position:absolute;inset:auto 0 0;z-index:2;padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+.hero h1{font-size:clamp(54px,10.5vw,168px);line-height:.92;margin:18px 0 22px;letter-spacing:.005em}
+.hero .row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.hero p{max-width:46ch;margin:0;font-size:17px;font-weight:300;opacity:.92}
+.hero .eyebrow{color:var(--bronze-l)}
+.facts{display:flex;gap:40px;flex-wrap:wrap}
+.facts div{border-left:1px solid rgba(255,255,255,.35);padding-left:16px}
+.facts b{display:block;font:400 34px/1.1 var(--display)}
+.facts span{font:500 10.5px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;opacity:.8}
+.cue{position:absolute;z-index:2;right:var(--gutR);top:50%;writing-mode:vertical-rl;font:500 10px/1 var(--mono);letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:14px;opacity:.8}
+.cue i{width:1px;height:60px;background:linear-gradient(#fff,transparent);animation:drip 2.4s infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:700px){.cue{display:none}.facts{gap:22px}.facts b{font-size:26px}}
 
-.rail{position:absolute;right:max(18px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;pointer-events:auto;list-style:none;margin:0;padding:0}
-.rail button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;gap:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mist)}
-.rail button i{width:7px;height:7px;border-radius:50%;border:1px solid var(--mist);transition:.3s}
-.rail button.act{color:var(--stone)}
-.rail button.act i{background:var(--brass);border-color:var(--brass);transform:scale(1.4)}
-.rail button span{opacity:0;transform:translateX(6px);transition:.3s}
-.rail button.act span,.rail:hover button span{opacity:1;transform:none}
-.rail button:focus-visible{outline:2px solid var(--brass)}
-@media (max-width:640px){.rail{display:none}}
+/* scrub film */
+.film{position:relative;background:var(--ink);color:#fff}
+.film .stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.film canvas{position:absolute;inset:0;width:100%;height:100%}
+.film .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,16,18,.62) 0%,rgba(15,16,18,.15) 50%,rgba(15,16,18,0) 70%),linear-gradient(0deg,rgba(15,16,18,.45),rgba(15,16,18,0) 40%)}
+.film .cap{position:absolute;left:var(--gut);bottom:calc(12vh + env(safe-area-inset-bottom,0px));max-width:min(560px,calc(100% - 40px));opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+.film .cap.on{opacity:1;transform:none}
+.film .cap h2{font-size:clamp(38px,5.4vw,78px);line-height:1;margin:16px 0 14px}
+.film .cap p{margin:0;font-weight:300;font-size:17px;max-width:42ch;opacity:.92}
+.film .cap .eyebrow{color:var(--bronze-l)}
+.film .meter{position:absolute;right:var(--gutR);bottom:calc(12vh + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.2em;display:flex;align-items:center;gap:14px;opacity:.85}
+.film .meter i{display:block;width:120px;height:1px;background:rgba(255,255,255,.25);position:relative}
+.film .meter i b{position:absolute;inset:0 auto 0 0;background:var(--bronze-l);width:0}
+@media (max-width:700px){.film .shade{background:linear-gradient(0deg,rgba(15,16,18,.82) 0%,rgba(15,16,18,.3) 45%,rgba(15,16,18,0) 70%)}.film .meter{display:none}}
 
-.bar{position:absolute;left:0;top:0;height:2px;background:var(--brass);width:0;opacity:.9}
+/* sections */
+section.s{padding-block:clamp(84px,11vw,150px)}
+.lead{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,6vw,96px);align-items:end}
+.lead h2{font-size:clamp(36px,4.6vw,66px);line-height:1.04;margin-top:22px}
+.lead p{margin:0 0 18px;color:var(--muted);max-width:52ch;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--line)}
+.stats div{padding:26px 18px 0 0}
+.stats b{display:block;font:400 clamp(34px,4vw,54px)/1 var(--display)}
+.stats span{display:block;margin-top:10px;font-size:13.5px;color:var(--muted);max-width:22ch}
+@media (max-width:860px){.lead{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr);row-gap:30px}}
 
-#tip{position:absolute;padding:12px 14px;background:rgba(12,15,20,.82);border:1px solid var(--line);border-radius:10px;font-size:12.5px;min-width:190px;transform:translate(16px,-50%);backdrop-filter:blur(8px)}
-#tip b{font-family:var(--display);font-weight:400;font-size:26px;display:block;line-height:1.1}
-#tip .row{display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:11px;color:var(--mist)}
-#tip .row em{font-style:normal;color:var(--stone)}
-#tip .ok{color:#9fd4a8}
+/* buildings */
+.dark{background:var(--ink);color:var(--paper)}
+.dark .muted{color:#a9a39a}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.head h2{font-size:clamp(36px,4.6vw,66px);line-height:1.04;margin-top:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{all:unset;cursor:pointer;padding:12px 18px;border:1px solid var(--line-d);font:500 12.5px/1 var(--body);letter-spacing:.06em;color:#cfc9bf;transition:.25s}
+.tabs button[aria-selected="true"]{background:var(--bronze);border-color:var(--bronze);color:#fff}
+.tabs button:hover{border-color:var(--bronze-l)}
+.tabs button:focus-visible{outline:2px solid var(--bronze-l);outline-offset:2px}
+.bld{display:grid;grid-template-columns:1.45fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.bld .main{position:relative;aspect-ratio:4/3;overflow:hidden;background:#2a2b2e;cursor:zoom-in}
+.bld .main img{width:100%;height:100%;object-fit:cover;transition:opacity .45s,transform 1.2s}
+.bld .main:hover img{transform:scale(1.025)}
+.thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.thumbs button{all:unset;cursor:pointer;aspect-ratio:1;overflow:hidden;opacity:.55;transition:opacity .25s;outline-offset:2px}
+.thumbs button[aria-current="true"],.thumbs button:hover{opacity:1}
+.thumbs button:focus-visible{outline:2px solid var(--bronze-l)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.spec h3{font-size:clamp(30px,3vw,44px);line-height:1.05;margin:14px 0 16px}
+.spec p{color:#b9b3a9;margin:0 0 26px}
+.spec dl{display:grid;grid-template-columns:auto 1fr;margin:0 0 30px;border-top:1px solid var(--line-d)}
+.spec dt,.spec dd{padding:14px 0;border-bottom:1px solid var(--line-d);margin:0;font-size:14.5px}
+.spec dt{color:#a9a39a;padding-right:24px}
+.spec dd{text-align:right;font-family:var(--mono);font-size:13.5px}
+.spec .acts{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.bld{grid-template-columns:1fr}}
 
-.floorcard{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(9vh + env(safe-area-inset-bottom,0px));background:rgba(12,15,20,.72);border:1px solid var(--line);border-radius:14px;padding:16px 18px;width:min(280px,calc(100% - 32px));backdrop-filter:blur(10px);pointer-events:auto;opacity:0;transition:opacity .3s}
-@media (min-width:641px){.floorcard{right:max(120px,env(safe-area-inset-right,0px))}}
-.floorcard .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--mist)}
-.floorcard .v{font-family:var(--display);font-size:34px;line-height:1.1}
-.floorcard .units{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:12px 0 14px}
-.floorcard .units i{height:18px;border-radius:3px;background:rgba(236,229,217,.12)}
-.floorcard .units i.free{background:var(--brass)}
-.floorcard .legend{display:flex;gap:14px;font-size:11px;color:var(--mist);margin-bottom:12px}
-.floorcard .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:rgba(236,229,217,.2)}
-.floorcard .legend span.f::before{background:var(--brass)}
-@media (max-width:640px){.floorcard{bottom:auto;top:calc(70px + env(safe-area-inset-top,0px))}}
+/* floor picker */
+.picker{display:grid;grid-template-columns:minmax(0,560px) 1fr;gap:clamp(28px,5vw,80px);align-items:center}
+.facade{position:relative;aspect-ratio:3/4;background:var(--paper2);overflow:hidden}
+.facade img{width:100%;height:100%;object-fit:cover}
+.facade svg{position:absolute;inset:0;width:100%;height:100%}
+.facade rect.fl{fill:rgba(168,131,79,0);stroke:none;cursor:pointer;transition:fill .2s}
+.facade rect.fl:hover,.facade rect.fl.sel{fill:rgba(168,131,79,.42)}
+.facade rect.fl.sel{stroke:#fff;stroke-width:2}
+.facade text{font:500 22px var(--mono);fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:4;pointer-events:none}
+.floorinfo .num{font:400 clamp(72px,9vw,128px)/.9 var(--display);margin:18px 0 6px}
+.floorinfo .sub{color:var(--muted);margin:0 0 26px}
+.units{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px}
+.unit{border:1px solid var(--line);padding:16px;background:#f5f2ed;display:flex;flex-direction:column;gap:4px;min-width:0}
+.unit b{font:400 26px/1.1 var(--display)}
+.unit span{font-size:13px;color:var(--muted)}
+.unit em{font-style:normal;font:500 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-top:8px}
+.unit em.free{color:#3f7a4c}.unit em.res{color:#a06a2c}.unit em.sold{color:#9a948b}
+.unit.sold{opacity:.55}
+.note{font:500 11px/1.5 var(--mono);color:var(--muted);letter-spacing:.04em}
+.floorlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.floorlist button{all:unset;cursor:pointer;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);font:500 13px var(--mono)}
+.floorlist button.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.floorlist button:focus-visible{outline:2px solid var(--bronze)}
+@media (max-width:860px){.picker{grid-template-columns:1fr}.facade{max-width:520px}}
 
-#lift{position:absolute;inset:0;background:#f3eee6;color:#1b1d22;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;gap:8px}
-#lift .n{font-family:var(--display);font-size:clamp(90px,16vw,200px);line-height:1}
-#lift .k{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#7a6f60}
+/* infrastructure */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{position:relative;overflow:hidden;background:#2a2b2e;color:#fff;min-height:320px;grid-column:span 4}
+.card.w{grid-column:span 8}
+.card video,.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s}
+.card:hover video{transform:scale(1.03)}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(15,16,18,.82),rgba(15,16,18,0) 55%)}
+.card .t{position:absolute;left:24px;right:24px;bottom:22px;z-index:2}
+.card h3{font-size:clamp(24px,2.3vw,32px);line-height:1.1;margin:10px 0 6px}
+.card p{margin:0;font-size:14px;opacity:.85;max-width:44ch}
+.card .eyebrow{color:var(--bronze-l)}
+@media (max-width:900px){.card,.card.w{grid-column:span 12;min-height:280px}}
 
-.hot{position:absolute;left:0;top:0;pointer-events:auto;all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;transform:translate(-14px,-50%);opacity:0;transition:opacity .3s}
-.hot .dot{width:28px;height:28px;border-radius:50%;background:rgba(201,164,107,.25);display:grid;place-items:center;position:relative}
-.hot .dot::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 0 rgba(201,164,107,.7);animation:ping 2s infinite}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(201,164,107,.7)}80%,100%{box-shadow:0 0 0 14px rgba(201,164,107,0)}}
-.hot .lbl{background:rgba(12,15,20,.8);border:1px solid var(--line);padding:6px 10px;border-radius:8px;font-size:12px;white-space:nowrap;color:var(--stone)}
-.hot .lbl small{font-family:var(--mono);color:var(--brass);margin-left:6px}
-.hot:hover .lbl,.hot:focus-visible .lbl{background:var(--brass);color:var(--ink)}
-.hot:hover .lbl small{color:var(--ink)}
+/* gallery */
+.gal{columns:3 320px;column-gap:14px}
+.gal button{all:unset;display:block;width:100%;margin:0 0 14px;cursor:zoom-in;break-inside:avoid;position:relative;overflow:hidden;background:var(--paper2)}
+.gal img{width:100%;height:auto;transition:transform 1s}
+.gal button:hover img{transform:scale(1.03)}
+.gal button:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.gal span{position:absolute;left:12px;bottom:12px;font:500 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(27,28,30,.6);padding:7px 9px}
 
-/* pano UI */
-#pano{position:fixed;inset:0;z-index:4;pointer-events:none}
-#pano::before,#pano::after{content:"";position:absolute;left:0;right:0;height:190px;pointer-events:none}
-#pano::before{top:0;background:linear-gradient(rgba(8,10,14,.72),rgba(8,10,14,0))}
-#pano::after{bottom:0;background:linear-gradient(rgba(8,10,14,0),rgba(8,10,14,.6))}
-#pano .top,#pano .chips,#pano .help,#pano .compass{z-index:1}
-#pano .top{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;
-  padding-top:calc(70px + env(safe-area-inset-top,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-#pano .ttl{pointer-events:none}
-#pano .ttl h3{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,56px);margin:.1em 0 0;line-height:1}
-#pano .chips{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;flex-wrap:wrap;justify-content:center;pointer-events:auto;width:calc(100% - 32px);max-width:720px}
-#pano .chips button{all:unset;cursor:pointer;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(12,15,20,.7);font-size:12.5px;backdrop-filter:blur(8px)}
-#pano .chips button.act{background:var(--brass);color:var(--ink);border-color:var(--brass)}
-#pano .chips button:focus-visible{outline:2px solid var(--brass)}
-#pano .exit{pointer-events:auto}
-#pano .help{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:rgba(12,15,20,.6);padding:12px 16px;border-radius:999px;transition:opacity .6s;display:flex;gap:10px;align-items:center;max-width:calc(100% - 48px);text-align:center;line-height:1.6}
-#pano .compass{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));width:120px;height:90px;background:rgba(12,15,20,.7);border:1px solid var(--line);border-radius:10px;padding:6px}
-#pano .compass svg{width:100%;height:100%}
-@media (max-width:640px){#pano .compass{display:none}}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:80;background:rgba(14,15,16,.96);display:grid;grid-template-rows:auto 1fr auto;color:#fff}
+.lb .bar{display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top,0px)) var(--gutR) 14px var(--gut);font:500 12px var(--mono);letter-spacing:.12em}
+.lb .stage{position:relative;display:grid;place-items:center;min-height:0;padding:0 64px}
+.lb img{max-height:calc(100vh - 130px);max-height:calc(100svh - 130px);max-width:100%;width:auto;height:auto;object-fit:contain}
+.lb .nav-b{position:absolute;top:50%;transform:translateY(-50%);all:unset;cursor:pointer;width:52px;height:52px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.3);border-radius:50%;position:absolute}
+.lb .prev{left:max(10px,env(safe-area-inset-left,0px))}.lb .next{right:max(10px,env(safe-area-inset-right,0px))}
+.lb .nav-b:hover{background:#fff;color:var(--ink)}
+.lb .x{all:unset;cursor:pointer;font-size:28px;line-height:1;padding:6px 10px}
+.lb .cap{text-align:center;padding:14px var(--gut) calc(18px + env(safe-area-inset-bottom,0px));font-size:14px;opacity:.8}
+@media (max-width:700px){.lb .stage{padding:0 8px}.lb .nav-b{top:auto;bottom:-6px;transform:none;width:44px;height:44px}}
 
-#fade{position:fixed;inset:0;background:var(--ink);z-index:8;opacity:0;pointer-events:none;transition:opacity .38s ease}
-#fade.on{opacity:1}
-#loader{position:fixed;inset:0;z-index:9;background:var(--ink);display:grid;place-items:center;transition:opacity .8s}
-#loader div{text-align:center}
-#loader b{font-family:var(--display);font-weight:400;font-size:44px;letter-spacing:.3em;display:block}
-#loader span{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--brass);text-transform:uppercase}
-#loader.gone{opacity:0;pointer-events:none}
+/* tour teaser */
+.tour{position:relative;overflow:hidden;background:var(--ink2);color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:440px}
+.tour .txt{padding:clamp(32px,5vw,72px);display:flex;flex-direction:column;justify-content:center;gap:18px;position:relative;z-index:1}
+.tour h2{font-size:clamp(34px,4vw,58px);line-height:1.04}
+.tour p{margin:0;color:#c9c3b9;max-width:44ch}
+.tour .pic{position:relative;min-height:300px}
+.tour .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tour .badge{position:absolute;left:20px;top:20px;font:500 10.5px/1 var(--mono);letter-spacing:.2em;background:var(--bronze);padding:9px 11px}
+@media (max-width:860px){.tour{grid-template-columns:1fr}}
 
-/* page after flight */
-main{position:relative;z-index:2}
-#track{height:1050vh;pointer-events:none}
-.band{background:var(--ink);position:relative}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:96px}
-.band h2{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1;margin:.2em 0 .4em;text-wrap:balance}
-.lead{color:var(--mist);max-width:60ch;margin:0 0 40px}
-.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-.plan{border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px;background:var(--night);min-width:0}
-.plan svg{width:100%;height:auto;background:#f1ece3;border-radius:10px}
-.plan h3{margin:0;font-family:var(--display);font-weight:400;font-size:32px}
-.plan dl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin:0;font-size:13px}
-.plan dt{color:var(--mist)}
-.plan dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
-.plan .price{font-family:var(--mono);font-size:13px;border-top:1px solid var(--line);padding-top:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.plan .price b{font-weight:500;color:var(--brass)}
-.note{font-family:var(--mono);font-size:11px;color:var(--mist);letter-spacing:.06em;margin-top:18px}
-
-.contact{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:start}
+.contact h2{font-size:clamp(36px,4.6vw,66px);line-height:1.04;margin:18px 0 22px}
+.contact .info{display:grid;gap:18px;margin-top:34px}
+.contact .info div{border-top:1px solid var(--line);padding-top:14px}
+.contact .info span{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.contact .info b{font:400 24px/1.2 var(--display)}
+form{background:#f6f3ee;border:1px solid var(--line);padding:clamp(22px,3vw,40px);display:grid;gap:16px}
+label{display:grid;gap:7px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{font:16px var(--body);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:0;padding:14px;min-width:0;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--bronze)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+#ok{margin:0;font-size:14.5px}
 @media (max-width:860px){.contact{grid-template-columns:1fr}}
-.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:28px}
-.facts div{border-top:1px solid var(--line);padding-top:10px}
-.facts b{font-family:var(--display);font-weight:400;font-size:34px;display:block;line-height:1.1}
-.facts span{font-size:12.5px;color:var(--mist)}
-form{display:grid;gap:14px;background:var(--night);border:1px solid var(--line);border-radius:18px;padding:26px}
-label{display:grid;gap:6px;font-size:12px;letter-spacing:.06em;color:var(--mist)}
-input,select{font:15px var(--body);color:var(--stone);background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
-input:focus,select:focus{outline:none;border-color:var(--brass)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media (max-width:480px){.row2{grid-template-columns:1fr}}
-#ok{font-size:13.5px;color:#9fd4a8;margin:0}
-footer .wrap{padding-block:32px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mist);letter-spacing:.06em;border-top:1px solid var(--line)}
+footer{background:var(--ink);color:#a9a39a;font:500 11.5px/1.6 var(--mono);letter-spacing:.06em}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:30px calc(30px + env(safe-area-inset-bottom,0px))}
 
-@media (prefers-reduced-motion:reduce){.hint i,.hot .dot::before{animation:none}}
+/* reveal */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none}.cue i{animation:none}}
+
+/* loader */
+#ld{position:fixed;inset:0;z-index:100;background:var(--ink);color:var(--paper);display:grid;place-items:center;transition:opacity .9s .1s,visibility .9s .1s}
+#ld.done{opacity:0;visibility:hidden}
+#ld b{display:block;font:400 34px/1 var(--display);letter-spacing:.34em;text-align:center}
+#ld i{display:block;margin:22px auto 0;width:160px;height:1px;background:rgba(238,235,229,.2);position:relative;overflow:hidden}
+#ld i::after{content:"";position:absolute;inset:0;background:var(--bronze-l);transform:translateX(-100%);animation:load 1.4s ease-in-out infinite}
+@keyframes load{to{transform:translateX(100%)}}
 </style>
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
+<script>document.documentElement.classList.add('js')</script>
+<div id="ld" aria-hidden="true"><div><b data-cfg="short">SADAF</b><i></i></div></div>
 
-
-<div id="loader"><div><b>SADAF</b><span>3D sahna yuklanmoqda</span></div></div>
-<canvas id="scene" tabindex="-1" aria-label="Sadaf Residence 3D sahnasi"></canvas>
-
-<header class="nav">
-  <a class="brand" href="#top">SADAF<small>RESIDENCE</small></a>
-  <ul>
-    <li><a href="#" data-go="0.2">Majmua</a></li>
-    <li><a href="#" data-go="0.38">Bino</a></li>
-    <li><a href="#" data-go="0.64">Lobbi</a></li>
-    <li><a href="#plans">Xonadonlar</a></li>
+<header class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="Bosh sahifa">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 28V5h14v23" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12.5 9.5h7M12.5 13.5h7M12.5 17.5h7M12.5 21.5h7" stroke="#b08a57" stroke-width="1.6"/></svg>
+    <span><b data-cfg="short">SADAF</b><small>RESIDENCE</small></span>
+  </a>
+  <ul id="menuList">
+    <li><a href="#hovli">Hovli</a></li>
+    <li><a href="#uylar">Uylar</a></li>
+    <li><a href="#qavat">Qavat tanlash</a></li>
+    <li><a href="#infra">Infratuzilma</a></li>
+    <li><a href="#galereya">Galereya</a></li>
+    <li><a href="tour.html">3D xonadon</a></li>
   </ul>
-  <a class="btn" href="#contact">Ko'rishga yozilish</a>
+  <a class="btn" href="#aloqa">Ko'rishga yozilish</a>
+  <button class="menu" id="menuBtn" aria-label="Menyu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
 </header>
 
-<div id="hud">
-  <div class="bar" id="bar"></div>
-
-  <section class="cap" data-a="0" data-b="0.085">
-    <div class="eyebrow">Namangan · topshirish 2027-IV chorak</div>
-    <h1>Sadaf<br>Residence</h1>
-    <p>Bulutlar ustidan boshlanadigan sayohat. Pastga aylantiring — majmuaga tushamiz, binoga kiramiz va xonadoningizni ichidan ko'rasiz.</p>
-  </section>
-
-  <section class="cap" data-a="0.15" data-b="0.275">
-    <div class="eyebrow">01 · Majmua</div>
-    <h2>4,2 gektar<br>yashil hudud</h2>
-    <p>Markaziy bog', suv havzasi, bolalar maydonchasi va yer osti avtoturargohi. Mashinalar hovliga kirmaydi.</p>
-    <div class="specs"><div><b>62%</b><span>ko'kalamzor</span></div><div><b>320</b><span>parking joyi</span></div><div><b>7 daq</b><span>shahar markazi</span></div></div>
-  </section>
-
-  <section class="cap" data-a="0.30" data-b="0.455">
-    <div class="eyebrow">02 · Bino</div>
-    <h2>16 qavat,<br>128 xonadon</h2>
-    <p>Sichqonchani qavat ustiga olib boring — qaysi xonadonlar bo'shligi ko'rinadi. Qavatni bosib tanlang.</p>
-  </section>
-
-  <section class="cap" data-a="0.475" data-b="0.565">
-    <div class="eyebrow">03 · Kirish</div>
-    <h2>Ichkariga<br>marhamat</h2>
-    <p>Bosh kirish soyabon ostida, 6 metrlik shisha eshik. Lobbiga to'g'ridan-to'g'ri o'tamiz.</p>
-  </section>
-
-  <section class="cap" data-a="0.595" data-b="0.715">
-    <div class="eyebrow">04 · Reception</div>
-    <h2>Lobbi va<br>konsyerj</h2>
-    <p>Mramor pol, 7,6 metrlik shift, yog'och panellar. Konsyerj kecha-kunduz ishlaydi. Endi liftga yo'l olamiz.</p>
-    <div class="specs"><div><b>7,6 m</b><span>shift balandligi</span></div><div><b>3</b><span>tezyurar lift</span></div><div><b>24/7</b><span>xavfsizlik</span></div></div>
-  </section>
-
-  <section class="cap" data-a="0.785" data-b="0.885">
-    <div class="eyebrow">05 · Xonadon <span id="aptNo">14-07</span></div>
-    <h2>2 xonali,<br>118 m²</h2>
-    <p>Panorama derazalar, alohida oshxona-ovqatlanish zonasi, kiyim xonali yotoqxona va terrasa.</p>
-    <div class="specs"><div><b>2,85 m</b><span>shift</span></div><div><b>14 m²</b><span>terrasa</span></div><div><b>Janub</b><span>yo'nalish</span></div></div>
-  </section>
-
-  <section class="cap" data-a="0.905" data-b="1.2">
-    <div class="eyebrow">06 · 360° ko'rinish</div>
-    <h2>Xonani tanlang</h2>
-    <p>Rejadagi nuqtalardan birini bosing — xona ichida turib, sichqoncha bilan 360° aylanib ko'rasiz.</p>
-    <button class="btn solid" id="enterBtn" type="button">360° ko'rishni boshlash</button>
-  </section>
-
-  <div class="hint" id="hint">Pastga aylantiring<i></i></div>
-
-  <ul class="rail" id="rail"></ul>
-
-  <div id="tip" hidden></div>
-
-  <aside class="floorcard" id="floorcard" aria-live="polite">
-    <div class="k">Tanlangan qavat</div>
-    <div class="v" id="fcFloor">14-qavat</div>
-    <div class="units" id="fcUnits"></div>
-    <div class="legend"><span class="f">Sotuvda</span><span>Band</span></div>
-    <button class="btn solid" id="fcGo" type="button">Xonadonni ichidan ko'rish →</button>
-  </aside>
-
-  <div id="lift"><div class="k">Lift · yuqoriga</div><div class="n" id="liftN">1</div><div class="k">qavat</div></div>
-
-  <div id="hots"></div>
-</div>
-
-<div id="pano" hidden>
-  <div class="top">
-    <div class="ttl"><div class="eyebrow">360° · Xonadon <span id="panoApt">14-07</span></div><h3 id="panoRoom">Mehmonxona</h3></div>
-    <button class="btn exit" id="exitBtn" type="button">✕ Rejaga qaytish</button>
-  </div>
-  <div class="help" id="help">Sichqoncha bilan torting · g'ildirak — yaqinlashtirish</div>
-  <div class="compass"><svg id="mini" viewBox="-7.6 -5.6 15.2 11.2" aria-hidden="true"></svg></div>
-  <div class="chips" id="chips"></div>
-</div>
-
-<div id="fade"></div>
-
 <main id="top">
-  <div id="track"></div>
-
-  <section class="band" id="plans">
-    <div class="wrap">
-      <div class="eyebrow">Xonadonlar</div>
-      <h2>Uchta reja, bitta manzara</h2>
-      <p class="lead">Barcha xonadonlarda panorama derazalar va kamida bitta terrasa bor. Narxlar qavat va tomonga qarab farq qiladi.</p>
-      <div class="plans">
-        <article class="plan">
-          <svg viewBox="0 0 160 100" role="img" aria-label="1 xonali reja sxemasi"><g fill="none" stroke="#2b2a28" stroke-width="2"><rect x="8" y="8" width="144" height="84"/><line x1="92" y1="8" x2="92" y2="92"/><line x1="92" y1="56" x2="152" y2="56"/></g><g font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b6257"><text x="22" y="52">Mehmonxona-oshxona</text><text x="104" y="34">Yotoqxona</text><text x="108" y="78">Hammom</text></g></svg>
-          <h3>1 xonali</h3>
-          <dl><dt>Umumiy maydon</dt><dd>46,8 m²</dd><dt>Terrasa</dt><dd>6,2 m²</dd><dt>Qavatlar</dt><dd>3–10</dd></dl>
-          <div class="price"><span>dan</span><b>416 500 000 so'm</b></div>
-        </article>
-        <article class="plan">
-          <svg viewBox="0 0 160 100" role="img" aria-label="2 xonali reja sxemasi"><g fill="none" stroke="#2b2a28" stroke-width="2"><rect x="8" y="8" width="144" height="84"/><line x1="86" y1="8" x2="86" y2="92"/><line x1="86" y1="50" x2="152" y2="50"/><line x1="118" y1="50" x2="118" y2="92"/></g><g font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b6257"><text x="20" y="52">Mehmonxona-oshxona</text><text x="98" y="32">Yotoqxona</text><text x="92" y="74">Dahliz</text><text x="122" y="74">Hammom</text></g></svg>
-          <h3>2 xonali</h3>
-          <dl><dt>Umumiy maydon</dt><dd>118,0 m²</dd><dt>Terrasa</dt><dd>14,0 m²</dd><dt>Qavatlar</dt><dd>8–18</dd></dl>
-          <div class="price"><span>dan</span><b>1 050 200 000 so'm</b></div>
-        </article>
-        <article class="plan">
-          <svg viewBox="0 0 160 100" role="img" aria-label="3 xonali reja sxemasi"><g fill="none" stroke="#2b2a28" stroke-width="2"><rect x="8" y="8" width="144" height="84"/><line x1="70" y1="8" x2="70" y2="92"/><line x1="70" y1="50" x2="152" y2="50"/><line x1="112" y1="8" x2="112" y2="50"/><line x1="112" y1="50" x2="112" y2="92"/></g><g font-family="IBM Plex Mono, monospace" font-size="7" fill="#6b6257"><text x="16" y="52">Mehmonxona</text><text x="76" y="32">Yotoq 1</text><text x="118" y="32">Yotoq 2</text><text x="76" y="74">Oshxona</text><text x="118" y="74">Hammom</text></g></svg>
-          <h3>3 xonali</h3>
-          <dl><dt>Umumiy maydon</dt><dd>96,2 m²</dd><dt>Terrasa</dt><dd>9,8 m²</dd><dt>Qavatlar</dt><dd>5–18</dd></dl>
-          <div class="price"><span>dan</span><b>856 200 000 so'm</b></div>
-        </article>
+<!-- HERO -->
+<section class="hero">
+  <img class="poster" src="assets/vid/hero.jpg" alt="">
+  <video id="heroVid" muted playsinline loop preload="auto" poster="assets/vid/hero.jpg" aria-hidden="true"><source src="assets/vid/hero.mp4" type="video/mp4"></video>
+  <div class="in wrap">
+    <div class="eyebrow">Turar-joy majmuasi</div>
+    <h1 data-cfg="name">Sadaf Residence</h1>
+    <div class="row">
+      <p>12 va 16 qavatli uylar, mashinasiz yopiq hovli, bolalar maydonchasi va birinchi qavatda do'konlar. Hammasini shu sahifada ko'rasiz.</p>
+      <div class="facts">
+        <div><b>3</b><span>turdagi bino</span></div>
+        <div><b>12–16</b><span>qavat</span></div>
+        <div><b>Yopiq</b><span>hovli</span></div>
       </div>
-      <p class="note">Namuna sayt: rejalar, maydonlar va narxlar shartli (m² — 8 900 000 so'mdan).</p>
     </div>
-  </section>
+  </div>
+  <div class="cue">Pastga aylantiring <i></i></div>
+</section>
 
-  <section class="band" id="contact">
-    <div class="wrap contact">
+<!-- FILM 1: aerial into the courtyard -->
+<section class="film" id="hovli" data-seq="assets/seq/aerial/" data-count="121" style="height:420vh">
+  <div class="stick">
+    <canvas aria-label="Hovliga havodan tushish animatsiyasi"></canvas>
+    <div class="shade"></div>
+    <div class="cap" data-a="0" data-b=".34"><div class="eyebrow">01 · Hovli</div><h2>Mashina kirmaydigan hovli</h2><p>Uylar orasidagi hovli faqat odamlar uchun. Avtoturargoh tashqi tomonda, ko'cha bo'ylab joylashgan.</p></div>
+    <div class="cap" data-a=".34" data-b=".68"><div class="eyebrow">02 · Bolalar</div><h2>Ko'z oldidagi maydoncha</h2><p>Bolalar maydonchasi hovli o'rtasida, uylarning derazalaridan ko'rinib turadi. Ota-ona balkondan kuzatib turadi.</p></div>
+    <div class="cap" data-a=".68" data-b="1.01"><div class="eyebrow">03 · Yashillik</div><h2>Daraxtlar, buta va ravoqlar</h2><p>Yo'laklar bo'yida butalar, ravoqli kirish yo'llari va soyali daraxtlar. Hovli sokin va toza.</p></div>
+    <div class="meter"><span>HOVLI</span><i><b></b></i></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="s">
+  <div class="wrap">
+    <div class="lead">
+      <div class="rv"><div class="eyebrow">Majmua haqida</div><h2>Shahar ichida, lekin shovqindan uzoq yashash uchun uylar</h2></div>
+      <div class="rv">
+        <p>Majmua uch turdagi binodan iborat: 12 qavatli bir podyezdli, 12 qavatli ikki podyezdli va 16 qavatli besh podyezdli uy. Binolar hovlini o'rab turadi, shuning uchun ichkari tinch va xavfsiz.</p>
+        <p>Pastki qavatlar g'isht bilan, yuqorisi och rangli suvoq bilan qoplangan. Balkonlar naqshli panjara bilan to'silgan. Ko'chaga qaragan birinchi qavatda do'kon va xizmat ko'rsatish joylari bor.</p>
+      </div>
+    </div>
+    <div class="stats rv">
+      <div><b>3</b><span>bino turi: 12/1, 12/2 va 16/5</span></div>
+      <div><b>16</b><span>qavat, eng baland bino</span></div>
+      <div><b>1-qavat</b><span>ko'chaga qaragan tijorat maydonlari</span></div>
+      <div><b>Hovli</b><span>mashinasiz, o'rtada bolalar maydonchasi</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDINGS -->
+<section class="s dark" id="uylar">
+  <div class="wrap">
+    <div class="head">
+      <div><div class="eyebrow">Uylar</div><h2>Uch xil bino, bitta uslub</h2></div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+    </div>
+    <div class="bld">
       <div>
-        <div class="eyebrow">Ko'rishga yozilish</div>
-        <h2>Namunaviy xonadonni jonli ko'ring</h2>
-        <p class="lead">Savdo ofisida 3D modelni VR ko'zoynakda ko'rsatamiz va qurilish maydoniga olib boramiz.</p>
-        <div class="facts">
-          <div><b>2027</b><span>topshirish muddati, IV chorak</span></div>
-          <div><b>30%</b><span>boshlang'ich to'lov, qolgani 36 oyga</span></div>
-          <div><b>1 400 m</b><span>shahar markazigacha</span></div>
-          <div><b>A+</b><span>energiya samaradorligi sinfi</span></div>
-        </div>
+        <div class="main" id="bMain" role="button" tabindex="0" aria-label="Rasmni kattalashtirish"><img id="bImg" alt=""></div>
+        <div class="thumbs" id="bThumbs"></div>
       </div>
-      <form id="lead" novalidate>
-        <label for="f-name">Ismingiz<input id="f-name" name="name" autocomplete="name" placeholder="Masalan, Dilshod" required></label>
-        <label for="f-tel">Telefon<input id="f-tel" name="tel" type="tel" autocomplete="tel" value="+998 " required></label>
-        <div class="row2">
-          <label for="f-type">Xonadon<select id="f-type" name="type"><option>1 xonali</option><option selected>2 xonali</option><option>3 xonali</option></select></label>
-          <label for="f-floor">Qavat<select id="f-floor" name="floor"></select></label>
-        </div>
-        <button class="btn solid" type="submit">Ariza yuborish</button>
-        <p id="ok" hidden></p>
-      </form>
+      <div class="spec">
+        <div class="eyebrow" id="bTag"></div>
+        <h3 id="bName"></h3>
+        <p id="bText"></p>
+        <dl id="bSpec"></dl>
+        <div class="acts"><a class="btn fill" href="#aloqa">Narxni bilish</a><a class="btn ghost" href="#qavat" id="bFloor">Qavat tanlash</a></div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="band"><div class="wrap"><span>SADAF RESIDENCE · Namangan</span><span>Namuna sayt · 3D model shartli, haqiqiy loyiha modeli bilan almashtiriladi</span></div></footer>
+<!-- FLOOR PICKER -->
+<section class="s" id="qavat">
+  <div class="wrap">
+    <div class="head rv"><div><div class="eyebrow">Qavat tanlash</div><h2>Qavat ustiga bosing</h2></div><p class="muted" style="max-width:40ch;margin:0;color:var(--muted)">12 qavatli bir podyezdli uy. Qavatni tanlang, o'sha qavatdagi xonadonlar o'ng tomonda chiqadi.</p></div>
+    <div class="picker">
+      <div class="facade" id="facade">
+        <img src="assets/img/b12a-front.webp" alt="12 qavatli bir podyezdli uyning old fasadi" loading="lazy">
+        <svg viewBox="0 0 1200 1600" id="fsvg" aria-label="Qavatlar"></svg>
+      </div>
+      <div class="floorinfo" aria-live="polite">
+        <div class="eyebrow">Tanlangan qavat</div>
+        <div class="num" id="fNum">7</div>
+        <p class="sub" id="fSub"></p>
+        <div class="units" id="fUnits"></div>
+        <a class="btn fill" href="#aloqa" id="fBook">Shu qavatni so'rash</a>
+        <div class="floorlist" id="fList" aria-label="Qavatlar ro'yxati"></div>
+        <p class="note" style="margin-top:18px">Xonadonlar soni va holati namuna sifatida ko'rsatilgan. Savdo bo'limi ma'lumotlari bilan almashtiriladi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILM 2: facade tilt-up -->
+<section class="film" data-seq="assets/seq/facade/" data-count="101" style="height:340vh">
+  <div class="stick">
+    <canvas aria-label="Fasad bo'ylab yuqoriga ko'tarilish animatsiyasi"></canvas>
+    <div class="shade"></div>
+    <div class="cap" data-a="0" data-b=".45"><div class="eyebrow">Birinchi qavat</div><h2>Do'konlar uydan chiqmasdan</h2><p>Ko'chaga qaragan birinchi qavatda katta vitrinali do'kon va xizmat ko'rsatish joylari. Kundalik xaridlar bir necha qadamda.</p></div>
+    <div class="cap" data-a=".45" data-b="1.01"><div class="eyebrow">Fasad</div><h2>Naqshli panjara va keng balkonlar</h2><p>Har bir xonadonda balkon bor. Naqshli panjaralar quyoshdan soya beradi va fasadga milliy ohang qo'shadi.</p></div>
+    <div class="meter"><span>FASAD</span><i><b></b></i></div>
+  </div>
+</section>
+
+<!-- INFRA -->
+<section class="s" id="infra">
+  <div class="wrap">
+    <div class="head rv"><div><div class="eyebrow">Infratuzilma</div><h2>Uy atrofida hammasi bor</h2></div></div>
+    <div class="grid">
+      <article class="card w rv"><video data-src="assets/vid/yard.mp4" poster="assets/vid/yard.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Hovli</div><h3>Yo'laklar va yashil hovli</h3><p>Hovli bo'ylab piyoda yo'laklari, butalar va daraxtlar.</p></div></article>
+      <article class="card rv"><video data-src="assets/vid/play.mp4" poster="assets/vid/play.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Bolalar</div><h3>Bolalar maydonchasi</h3><p>To'siq bilan o'ralgan, uylardan ko'rinib turadi.</p></div></article>
+      <article class="card rv"><video data-src="assets/vid/shops.mp4" poster="assets/vid/shops.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Savdo</div><h3>Birinchi qavatdagi do'konlar</h3><p>Ko'cha tomonda, alohida kirish joylari bilan.</p></div></article>
+      <article class="card w rv"><video data-src="assets/vid/street.mp4" poster="assets/vid/street.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Ko'cha</div><h3>Keng ko'cha va avtoturargoh</h3><p>Mashinalar uchun joy uylar bo'ylab, ko'cha tomonida.</p></div></article>
+      <article class="card w rv"><video data-src="assets/vid/arch.mp4" poster="assets/vid/arch.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Kirish</div><h3>Ravoqli kirish yo'li</h3><p>Hovliga gulzor va ravoqlar orqali kiriladi.</p></div></article>
+      <article class="card rv"><video data-src="assets/vid/back.mp4" poster="assets/vid/back.jpg" muted loop playsinline preload="none"></video><div class="t"><div class="eyebrow">Orqa tomon</div><h3>Uylar orasidagi yo'l</h3><p>Podyezdlarga hovli ichidan qulay kirish.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="s" id="galereya" style="padding-top:0">
+  <div class="wrap">
+    <div class="head rv"><div><div class="eyebrow">Galereya</div><h2>Har tomondan</h2></div><p style="max-width:38ch;margin:0;color:var(--muted)">Rasmni bosing, to'liq ekranda ochiladi. Strelkalar yoki surish bilan varaqlang.</p></div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<!-- TOUR -->
+<section style="padding-bottom:clamp(84px,11vw,150px)">
+  <div class="wrap">
+    <a class="tour rv" href="tour.html" style="text-decoration:none">
+      <div class="txt">
+        <div class="eyebrow" style="color:var(--bronze-l)">3D sayohat</div>
+        <h2>Xonadon ichida 360° aylaning</h2>
+        <p>Binoga kiring, lobbidan o'ting, liftda ko'tarilib xonadonni ichidan ko'ring. Sichqoncha yoki barmoq bilan har tomonga qarang.</p>
+        <span class="btn ghost" style="align-self:flex-start;margin-top:8px">3D turni ochish →</span>
+      </div>
+      <div class="pic"><img src="assets/img/b12b-court.webp" alt="" loading="lazy"><span class="badge">NAMUNAVIY XONADON</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="s" id="aloqa" style="background:var(--paper2)">
+  <div class="wrap contact">
+    <div class="rv">
+      <div class="eyebrow">Aloqa</div>
+      <h2>Uyni o'z ko'zingiz bilan ko'ring</h2>
+      <p style="color:var(--muted);max-width:46ch;margin:0">Raqamingizni qoldiring. Savdo bo'limi qo'ng'iroq qilib, narxlar, to'lov shartlari va bo'sh xonadonlar haqida aytib beradi.</p>
+      <div class="info">
+        <div><span>Telefon</span><b data-cfg="phone"></b></div>
+        <div><span>Savdo ofisi</span><b data-cfg="address"></b></div>
+        <div><span>Ish vaqti</span><b data-cfg="hours"></b></div>
+      </div>
+    </div>
+    <form id="lead" class="rv" novalidate>
+      <label for="f-name">Ismingiz<input id="f-name" autocomplete="name" placeholder="Masalan, Dilshod"></label>
+      <label for="f-tel">Telefon<input id="f-tel" type="tel" autocomplete="tel" value="+998 " inputmode="tel"></label>
+      <div class="two">
+        <label for="f-bld">Bino<select id="f-bld"><option>12 qavat, 1 podyezd</option><option>12 qavat, 2 podyezd</option><option>16 qavat, 5 podyezd</option><option>Hali tanlamadim</option></select></label>
+        <label for="f-room">Xonalar<select id="f-room"><option>1 xonali</option><option selected>2 xonali</option><option>3 xonali</option><option>4 xonali</option></select></label>
+      </div>
+      <label for="f-floor">Qavat (ixtiyoriy)<input id="f-floor" placeholder="Masalan, 7"></label>
+      <button class="btn fill" type="submit" style="justify-content:center">Qo'ng'iroq kutaman</button>
+      <p id="ok" hidden></p>
+    </form>
+  </div>
+</section>
 </main>
 
-<script type="importmap">
-{ "imports": {
-  "three": "./vendor/three/three.module.min.js",
-  "three/addons/": "./vendor/three/addons/"
-} }
-</script>
-<script type="module">
-import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+<footer><div class="wrap"><span data-cfg="name">Sadaf Residence</span><span>Vizualizatsiyalar loyiha renderlari asosida. Yakuniy ko'rinish farq qilishi mumkin.</span></div></footer>
 
-/* ---------- helpers ---------- */
-const $ = s => document.querySelector(s);
-const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-const smooth = (a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);};
-function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
-const R = rng(7);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Rasm ko'rish">
+  <div class="bar"><span id="lbN"></span><button class="x" id="lbX" aria-label="Yopish">×</button></div>
+  <div class="stage"><button class="nav-b prev" id="lbP" aria-label="Oldingi">←</button><img id="lbImg" alt=""><button class="nav-b next" id="lbNx" aria-label="Keyingi">→</button></div>
+  <div class="cap" id="lbCap"></div>
+</div>
 
-/* ---------- renderer ---------- */
-const canvas = $('#scene');
-const mobile = matchMedia('(max-width:760px), (pointer:coarse)').matches;
-{const t=document.createElement('canvas');if(!(t.getContext('webgl2')||t.getContext('webgl'))){$('#loader span').textContent="Brauzeringiz 3D grafikani qo'llab-quvvatlamaydi. Chrome yoki Safari'ning yangi versiyasida oching.";throw new Error('WebGL yo\'q');}}
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:1.75));
-renderer.setSize(innerWidth, innerHeight, false);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+<script>
+/* ===== Loyiha ma'lumotlari: shu yerni o'zgartiring ===== */
+const PROJECT = {
+  name: "Sadaf Residence",
+  short: "SADAF",
+  phone: "+998 (__) ___-__-__",
+  address: "Manzil kiritiladi",
+  hours: "Du–Sha, 9:00–19:00",
+  leadEndpoint: "", // arizalar qabul qilinadigan manzil (Telegram bot / CRM), ulanganda yoziladi
+};
+/* ======================================================= */
 
-const scene = new THREE.Scene();
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.fog = new THREE.Fog(0xdcc3a6, 280, 2600);
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+$$('[data-cfg]').forEach(el=>{const v=PROJECT[el.dataset.cfg];if(v)el.textContent=v;});
+document.title=PROJECT.name;
 
-const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 7000);
+/* nav */
+const nav=$('#nav');
+const onNav=()=>nav.classList.toggle('solid',scrollY>innerHeight*.6);
+addEventListener('scroll',onNav,{passive:true});onNav();
+$('#menuBtn').onclick=()=>{const o=nav.classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o);if(o)nav.classList.add('solid');};
+$$('#menuList a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');$('#menuBtn').setAttribute('aria-expanded',false);}));
 
-/* ---------- textures ---------- */
-function ctex(w,h,draw,rx=1,ry=1){
-  const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
-  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);
-  t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=renderer.capabilities.getMaxAnisotropy();return t;
+/* hero */
+const hv=$('#heroVid');
+if(!reduce){hv.play().catch(()=>{});}
+const hideLoader=()=>$('#ld').classList.add('done');
+hv.addEventListener('playing',hideLoader,{once:true});
+addEventListener('load',()=>setTimeout(hideLoader,300));
+setTimeout(hideLoader,3500);
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{rootMargin:'0px 0px -8% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* lazy video cards */
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;
+  if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src;}if(!reduce)v.play().catch(()=>{});}else v.pause();}),{rootMargin:'200px 0px'});
+$$('.card video').forEach(v=>vio.observe(v));
+
+/* scroll-scrubbed films */
+class Film{
+  constructor(sec){
+    this.sec=sec;this.cv=sec.querySelector('canvas');this.ctx=this.cv.getContext('2d');
+    this.n=+sec.dataset.count;this.base=sec.dataset.seq;this.imgs=new Array(this.n);this.loaded=new Array(this.n).fill(false);
+    this.caps=[...sec.querySelectorAll('.cap')];this.bar=sec.querySelector('.meter b');
+    this.cur=-1;this.started=false;this.p=0;this.resize();
+    addEventListener('resize',()=>this.resize());
+  }
+  start(){ if(this.started)return;this.started=true;
+    // coarse-to-fine loading so the film is scrubbable almost immediately
+    const order=[];const seen=new Set();for(const step of [16,8,4,2,1])for(let i=0;i<this.n;i+=step)if(!seen.has(i)){seen.add(i);order.push(i);}
+    let k=0;const next=()=>{if(k>=order.length)return;const i=order[k++];const im=new Image();im.decoding='async';
+      im.onload=()=>{this.imgs[i]=im;this.loaded[i]=true;if(this.cur<0||Math.abs(i-this.want())<=Math.abs(this.cur-this.want()))this.draw(true);next();};
+      im.onerror=next;im.src=this.base+String(i+1).padStart(3,'0')+'.webp';};
+    for(let c=0;c<6;c++)next();
+  }
+  resize(){const d=Math.min(devicePixelRatio||1,2);this.cv.width=innerWidth*d;this.cv.height=innerHeight*d;this.cur=-1;this.draw(true);}
+  want(){return Math.round(this.p*(this.n-1));}
+  nearest(t){for(let r=0;r<this.n;r++){if(this.loaded[t-r])return t-r;if(this.loaded[t+r])return t+r;}return -1;}
+  draw(force){const i=this.nearest(this.want());if(i<0||(!force&&i===this.cur))return;this.cur=i;const im=this.imgs[i];
+    const W=this.cv.width,H=this.cv.height,s=Math.max(W/im.naturalWidth,H/im.naturalHeight),w=im.naturalWidth*s,h=im.naturalHeight*s;
+    this.ctx.drawImage(im,(W-w)/2,(H-h)/2,w,h);}
+  update(){const r=this.sec.getBoundingClientRect();const total=r.height-innerHeight;
+    if(r.top<innerHeight*2.5&&r.bottom>-innerHeight)this.start();
+    if(r.bottom<0||r.top>innerHeight)return;
+    this.p=clamp(-r.top/total,0,1);this.draw(false);
+    if(this.bar)this.bar.style.width=(this.p*100)+'%';
+    this.caps.forEach(c=>c.classList.toggle('on',this.p>=+c.dataset.a&&this.p<+c.dataset.b));}
 }
-const rep=(t,x,y)=>{const c=t.clone();c.needsUpdate=true;c.repeat.set(x,y);return c;};
+const films=$$('.film').map(s=>new Film(s));
+let tick=false;
+const onScroll=()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{tick=false;films.forEach(f=>f.update());});};
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
 
-const marbleTex = ctex(512,512,(g,w,h)=>{
-  g.fillStyle='#e9e3d8';g.fillRect(0,0,w,h);
-  for(let i=0;i<2200;i++){g.fillStyle=`rgba(${170+R()*50|0},${160+R()*50|0},${150+R()*50|0},.07)`;g.beginPath();g.arc(R()*w,R()*h,R()*20,0,7);g.fill();}
-  for(let i=0;i<16;i++){g.strokeStyle=`rgba(125,112,98,${.12+R()*.25})`;g.lineWidth=.6+R()*1.6;g.beginPath();let x=R()*w,y=R()*h;g.moveTo(x,y);for(let k=0;k<9;k++){x+=(R()-.35)*110;y+=(R()-.5)*80;g.lineTo(x,y);}g.stroke();}
-  g.strokeStyle='rgba(95,85,72,.28)';g.lineWidth=2;g.strokeRect(1,1,w-2,h-2);
-});
-const woodTex = ctex(512,512,(g,w,h)=>{
-  const rows=8,ph=h/rows;
-  for(let i=0;i<rows;i++){let x=-R()*w*.5;while(x<w){const len=w*(.35+R()*.4),v=R()*24;
-    g.fillStyle=`rgb(${174+v|0},${134+v*.8|0},${96+v*.6|0})`;g.fillRect(x,i*ph,len,ph);
-    for(let k=0;k<7;k++){g.strokeStyle=`rgba(92,60,34,${.05+R()*.08})`;g.lineWidth=1;g.beginPath();const yy=i*ph+R()*ph;g.moveTo(x,yy);g.bezierCurveTo(x+len*.3,yy+(R()-.5)*6,x+len*.6,yy+(R()-.5)*6,x+len,yy);g.stroke();}
-    g.fillStyle='rgba(60,40,25,.35)';g.fillRect(x,i*ph,1.5,ph);x+=len;}
-    g.fillStyle='rgba(60,40,25,.3)';g.fillRect(0,i*ph,w,1.5);}
-});
-const tileTex = ctex(256,256,(g,w,h)=>{g.fillStyle='#d9d6cf';g.fillRect(0,0,w,h);for(let i=0;i<4;i++)for(let j=0;j<4;j++){const v=R()*10;g.fillStyle=`rgb(${222+v|0},${219+v|0},${212+v|0})`;g.fillRect(i*64+1.5,j*64+1.5,61,61);}});
-const groundTex = ctex(512,512,(g,w,h)=>{g.fillStyle='#8c8768';g.fillRect(0,0,w,h);for(let i=0;i<3200;i++){const c=R();g.fillStyle=c<.55?`rgba(92,110,66,${.25+R()*.3})`:`rgba(196,178,140,${.15+R()*.25})`;g.beginPath();g.arc(R()*w,R()*h,2+R()*14,0,7);g.fill();}},60,60);
-const paveTex = ctex(256,256,(g,w,h)=>{g.fillStyle='#c4b8a4';g.fillRect(0,0,w,h);for(let i=0;i<8;i++)for(let j=0;j<4;j++){const v=R()*14;g.fillStyle=`rgb(${190+v|0},${178+v|0},${158+v|0})`;g.fillRect(i*32+1,j*64+(i%2)*32+1,30,62);}},30,30);
-const puffTex = ctex(256,256,(g,w,h)=>{for(let i=0;i<16;i++){const x=w*(.25+R()*.5),y=h*(.38+R()*.3),rad=w*(.1+R()*.2);const gr=g.createRadialGradient(x,y,0,x,y,rad);gr.addColorStop(0,'rgba(255,255,255,.5)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.beginPath();g.arc(x,y,rad,0,7);g.fill();}});
-puffTex.wrapS=puffTex.wrapT=THREE.ClampToEdgeWrapping;
-function windowTex(){return ctex(512,64,(g,w,h)=>{g.fillStyle='#000';g.fillRect(0,0,w,h);const cols=22;for(let i=0;i<cols;i++){if(R()<.42){g.fillStyle=`rgba(255,${185+R()*45|0},${115+R()*60|0},${.45+R()*.55})`;g.fillRect(i*w/cols+3,6,w/cols-6,52);}}});}
-const logoTex = ctex(1024,200,(g,w,h)=>{g.clearRect(0,0,w,h);g.fillStyle='#e7c88f';g.font='300 120px Georgia, serif';g.textAlign='center';g.textBaseline='middle';
-  const txt='S A D A F';g.fillText(txt,w/2,h/2-10);g.font='26px monospace';g.fillText('R E S I D E N C E',w/2,h-24);});
-logoTex.wrapS=logoTex.wrapT=THREE.ClampToEdgeWrapping;
-
-/* ---------- materials ---------- */
-const M = o => new THREE.MeshStandardMaterial(Object.assign({envMapIntensity:.55},o));
-const mat = {
-  concrete:M({color:0xe8e2d7,roughness:.85}),
-  travertine:M({color:0xd8cbb6,roughness:.7}),
-  darkMetal:M({color:0x2a2c30,roughness:.4,metalness:.7}),
-  brass:M({color:0xc9a46b,roughness:.3,metalness:1,envMapIntensity:1}),
-  glassExt:M({color:0x23384b,roughness:.06,metalness:.9,transparent:true,opacity:.42,depthWrite:false,envMapIntensity:1.3}),
-  glassRail:M({color:0x9fb8c9,roughness:.05,metalness:.3,transparent:true,opacity:.22,depthWrite:false}),
-  glassWin:M({color:0xbfd4e2,roughness:.03,metalness:.2,transparent:true,opacity:.12,depthWrite:false,envMapIntensity:1.4}),
-  ground:M({color:0xffffff,map:groundTex,roughness:1,envMapIntensity:.2}),
-  road:M({color:0x4a4a4c,roughness:.95}),
-  pave:M({color:0xffffff,map:paveTex,roughness:.9}),
-  lawn:M({color:0x6f8752,roughness:1}),
-  water:M({color:0x1f4a63,roughness:.05,metalness:.6,envMapIntensity:1.5}),
-  marble:M({color:0xf2ede4,map:rep(marbleTex,6,3),roughness:.22,envMapIntensity:.6}),
-  wallWhite:M({color:0xefebe4,roughness:.92}),
-  woodFloor:M({color:0xffffff,map:rep(woodTex,7,5),roughness:.55}),
-  wood:M({color:0x8a6646,roughness:.6}),
-  woodDark:M({color:0x4d3626,roughness:.55}),
-  fabric:M({color:0x9b9184,roughness:1}),
-  fabricDark:M({color:0x4b4f55,roughness:1}),
-  linen:M({color:0xf2efe9,roughness:1}),
-  rug:M({color:0xcbbfae,roughness:1}),
-  black:M({color:0x111214,roughness:.25,metalness:.3}),
-  ceramic:M({color:0xf7f6f2,roughness:.15}),
-  counter:M({color:0xffffff,map:rep(marbleTex,2,1),roughness:.2}),
-  tile:M({color:0xffffff,map:rep(tileTex,3.5,5),roughness:.35}),
-  leaf:M({color:0x4f6b3c,roughness:.9}),
-  pot:M({color:0xb9a48b,roughness:.8}),
-  warmLight:new THREE.MeshBasicMaterial({color:0xffd9a0}),
-  stripLight:new THREE.MeshBasicMaterial({color:0xfff1d6}),
+/* image set */
+const IMG={
+  'b12a-front':"12 qavatli uy, old fasad",'b12a-back':"12 qavatli uy va bolalar maydonchasi",'b12a-side':"12 qavatli uy, burchakdan",'b12a-lawn':"12 qavatli uy, maysazor tomondan",
+  'b12b-yard':"12 qavatli ikki podyezdli uy, hovli",'b12b-court':"Hovli va bolalar maydonchasi",'b12b-corner':"12 qavatli ikki podyezdli uy, burchak",'b12b-wide':"12 qavatli ikki podyezdli uy, umumiy ko'rinish",
+  'b16-hero':"16 qavatli uy, do'konlar tomondan",'b16-tower':"16 qavatli uy, avtoturargoh tomondan",'b16-street':"16 qavatli uy, ko'chadan",'b16-far':"16 qavatli uy, uzoqdan",'b16-pano':"Majmua panoramasi",
 };
 
-function box(w,h,d,m,x,y,z,parent=scene,cast=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;parent.add(o);return o;}
-function cyl(rt,rb,h,m,x,y,z,parent=scene,seg=24){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
-function plane(w,d,m,x,y,z,parent=scene){const o=new THREE.Mesh(new THREE.PlaneGeometry(w,d),m);o.rotation.x=-Math.PI/2;o.position.set(x,y,z);o.receiveShadow=true;parent.add(o);return o;}
-function plant(x,z,s,parent=scene,y=0){cyl(.32*s,.26*s,.6*s,mat.pot,x,y+.3*s,z,parent);const f=new THREE.Mesh(new THREE.IcosahedronGeometry(.6*s,1),mat.leaf);f.position.set(x,y+1.1*s,z);f.scale.set(1,1.3,1);f.castShadow=true;parent.add(f);}
-
-/* ---------- sky, sun, light ---------- */
-const sunDir = new THREE.Vector3(-120,95,170).normalize();
-const sky = new THREE.Mesh(new THREE.SphereGeometry(3200,32,16), new THREE.ShaderMaterial({
-  side:THREE.BackSide,depthWrite:false,fog:false,toneMapped:false,uniforms:{sunDir:{value:sunDir}},
-  vertexShader:`varying vec3 vP;void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-  fragmentShader:`varying vec3 vP;uniform vec3 sunDir;void main(){vec3 d=normalize(vP);float h=d.y;
-    vec3 top=vec3(.17,.27,.46),mid=vec3(.58,.64,.75),hor=vec3(.96,.79,.62),gnd=vec3(.80,.72,.62);
-    vec3 c=mix(hor,mid,smoothstep(0.,.2,h));c=mix(c,top,smoothstep(.2,.8,h));c=mix(c,gnd,smoothstep(0.,-.08,h));
-    float s=max(dot(d,sunDir),0.);c+=vec3(1.,.72,.42)*pow(s,20.)*.5+vec3(1.,.92,.75)*pow(s,700.)*1.6;
-    gl_FragColor=vec4(c,1.);}`
-}));
-sky.renderOrder=-1;scene.add(sky);
-
-scene.add(new THREE.HemisphereLight(0xc4d6ee,0x8a7a64,.85));
-const sun = new THREE.DirectionalLight(0xffd6a8,3.2);
-sun.position.copy(sunDir).multiplyScalar(220).add(new THREE.Vector3(0,20,0));
-sun.target.position.set(0,20,0);
-sun.castShadow=true;sun.shadow.mapSize.set(mobile?1024:2048,mobile?1024:2048);
-Object.assign(sun.shadow.camera,{left:-75,right:75,top:75,bottom:-75,near:10,far:520});
-sun.shadow.bias=-.0004;sun.shadow.normalBias=.03;
-scene.add(sun,sun.target);
-
-/* ---------- ground & context ---------- */
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(5000,5000,64,64),mat.ground);ground.rotation.x=-Math.PI/2;ground.position.y=-.12;ground.receiveShadow=true;scene.add(ground);
-plane(160,150,mat.pave,0,.02,10);
-plane(36,20,mat.lawn,-48,.04,34);plane(36,20,mat.lawn,48,.04,34);
-plane(30,60,mat.lawn,-60,.04,-30);plane(30,60,mat.lawn,60,.04,-30);
-box(30,.3,9,mat.travertine,0,.15,34,scene,false);
-plane(29,8.2,mat.water,0,.32,34);
-for(const [x,z,w,d] of [[0,96,900,14],[0,-86,900,14],[-96,0,14,900],[96,0,14,900],[0,330,1400,18],[-330,0,18,1400],[330,0,18,1400]]) plane(w,d,mat.road,x,.03,z);
-
-// trees
-const trunkG=new THREE.CylinderGeometry(.18,.25,2.4,6), crownG=new THREE.IcosahedronGeometry(1.8,1);
-const treeSpots=[];
-for(let i=-4;i<=4;i++){treeSpots.push([i*7,54],[i*7,72]);}
-for(let i=0;i<14;i++){treeSpots.push([-70,-60+i*9],[70,-60+i*9]);}
-for(let i=0;i<900;i++){const a=R()*Math.PI*2,r=110+R()*700;const x=Math.cos(a)*r,z=Math.sin(a)*r;if(Math.abs(x)%330<14||Math.abs(z)%330<14)continue;treeSpots.push([x,z]);}
-const trunks=new THREE.InstancedMesh(trunkG,mat.woodDark,treeSpots.length), crowns=new THREE.InstancedMesh(crownG,mat.leaf,treeSpots.length);
-const dm=new THREE.Object3D(), tc=new THREE.Color();
-treeSpots.forEach(([x,z],i)=>{const s=.8+R()*.7;dm.position.set(x,1.2*s,z);dm.scale.setScalar(s);dm.rotation.set(0,R()*6,0);dm.updateMatrix();trunks.setMatrixAt(i,dm.matrix);
-  dm.position.y=3.4*s;dm.scale.set(s,s*1.15,s);dm.updateMatrix();crowns.setMatrixAt(i,dm.matrix);tc.setHSL(.24+R()*.06,.28+R()*.12,.26+R()*.1);crowns.setColorAt(i,tc);});
-crowns.castShadow=trunks.castShadow=true;scene.add(trunks,crowns);
-
-// city blocks
-const blockG=new THREE.BoxGeometry(1,1,1);
-const blocks=[];
-for(let i=0;i<700;i++){const a=R()*Math.PI*2,r=105+R()*1100;const x=Math.cos(a)*r,z=Math.sin(a)*r;
-  if(Math.abs(Math.abs(x)-330)<22||Math.abs(Math.abs(z)-330)<22||Math.abs(Math.abs(x)-96)<16||Math.abs(Math.abs(z)-90)<16)continue;
-  if(Math.hypot(x-600,z)<40)continue;
-  const near=r<200;const h=near?5+R()*10:(R()<.08?30+R()*55:6+R()*22);blocks.push([x,z,10+R()*22,h,8+R()*18]);}
-// neighbours visible from the apartment
-for(let i=0;i<34;i++){const a=R()*Math.PI*2,r=90+R()*260;blocks.push([600+Math.cos(a)*r,Math.sin(a)*r,14+R()*14,25+R()*60,14+R()*14]);}
-const city=new THREE.InstancedMesh(blockG,M({color:0xffffff,roughness:.85}),blocks.length);
-blocks.forEach(([x,z,w,h,d],i)=>{dm.position.set(x,h/2,z);dm.scale.set(w,h,d);dm.rotation.set(0,(R()<.5?0:Math.PI/2)+(R()-.5)*.1,0);dm.updateMatrix();city.setMatrixAt(i,dm.matrix);tc.setHSL(.08+R()*.04,.12+R()*.1,.62+R()*.18);city.setColorAt(i,tc);});
-city.castShadow=true;city.receiveShadow=true;scene.add(city);
-
-// clouds
-const clouds=new THREE.Group();scene.add(clouds);
-for(let i=0;i<150;i++){const m=new THREE.SpriteMaterial({map:puffTex,color:new THREE.Color().setHSL(.07,.4,.9+R()*.08),transparent:true,depthWrite:false,opacity:.75+R()*.25});
-  const s=new THREE.Sprite(m);const sc=90+R()*160;s.scale.set(sc,sc*.6,1);s.position.set(-520+R()*1040,150+R()*120,-250+R()*760);clouds.add(s);}
-
-/* ---------- the tower ---------- */
-const TW=18,TD=14,FH=3.4,NF=16,TZ=-2,BASE=8.6;
-const towerGroup=new THREE.Group();scene.add(towerGroup);
-const glassMats=[0,1,2,3].map(()=>M({color:0x253546,roughness:.08,metalness:.85,emissive:0xffcf8c,emissiveMap:windowTex(),emissiveIntensity:1.1,envMapIntensity:1.3}));
-const bands=[];
-const finG=new THREE.BoxGeometry(.22,FH-.45,.5);
-const fins=new THREE.InstancedMesh(finG,mat.concrete,NF*40);let fi=0;
-for(let i=0;i<NF;i++){
-  const y0=BASE+i*FH, gh=FH-.45;
-  box(TW,gh,TD,glassMats[i%4],0,y0+.45+gh/2,TZ,towerGroup);
-  box(TW+1.2,.45,TD+1.2,mat.concrete,0,y0+.225,TZ,towerGroup);
-  const xs=[-4.6,0,4.6];const bx=xs[(i*2)%3], bx2=xs[(i+1)%3];
-  box(8.6,.32,2.8,mat.concrete,bx,y0+.16,TZ+TD/2+.6+1.4,towerGroup);
-  box(8.6,1.05,.05,mat.glassRail,bx,y0+.85,TZ+TD/2+.6+2.78,towerGroup,false);
-  box(8.6,.32,2.4,mat.concrete,bx2,y0+.16,TZ-TD/2-.6-1.2,towerGroup);
-  for(let k=0;k<20;k++){const x=-TW/2+.45+k*(TW-.9)/19;
-    dm.position.set(x,y0+.45+gh/2,TZ+TD/2+.25);dm.scale.set(1,1,1);dm.rotation.set(0,0,0);dm.updateMatrix();fins.setMatrixAt(fi++,dm.matrix);
-    dm.position.z=TZ-TD/2-.25;dm.updateMatrix();fins.setMatrixAt(fi++,dm.matrix);}
-  const band=new THREE.Mesh(new THREE.BoxGeometry(TW+.5,gh+.1,TD+.5),new THREE.MeshBasicMaterial({color:0xc9a46b,transparent:true,opacity:0,depthWrite:false}));
-  band.position.set(0,y0+.45+gh/2,TZ);band.userData.floor=i;towerGroup.add(band);bands.push(band);
-}
-fins.count=fi;fins.castShadow=true;towerGroup.add(fins);
-const topY=BASE+NF*FH;
-box(TW+1.2,.6,TD+1.2,mat.concrete,0,topY+.3,TZ,towerGroup);
-box(12,3.6,9,mat.concrete,0,topY+2.4,TZ-1,towerGroup);
-box(TW+1.2,.5,.4,mat.concrete,0,topY+4.6,TZ+TD/2+.4,towerGroup);
-for(const sx of [-1,1]) box(.4,4.4,TD+1.2,mat.concrete,sx*(TW/2+.4),topY+2.4,TZ,towerGroup);
-
-/* ---------- podium & lobby ---------- */
-const PX=22,PZ0=-10,PZ1=12,PH=8;
-box(PX*2,PH,.5,mat.travertine,0,PH/2,PZ0);                 // back
-for(const s of [-1,1]) box(.5,PH,PZ1-PZ0,mat.travertine,s*PX,PH/2,(PZ0+PZ1)/2); // sides
-box(PX*2+1.6,.6,PZ1-PZ0+2,mat.concrete,0,PH+.3,(PZ0+PZ1)/2+.6); // roof
-// facade glass with door
-const DW=3.2,DH=4.8;
-box(PX-DW,PH-.4,.06,mat.glassExt,-(PX+DW)/2,PH/2-.2,PZ1-.2,scene,false);
-box(PX-DW,PH-.4,.06,mat.glassExt,(PX+DW)/2,PH/2-.2,PZ1-.2,scene,false);
-box(DW*2,PH-DH-.4,.06,mat.glassExt,0,DH+(PH-DH-.4)/2,PZ1-.2,scene,false);
-const pfins=new THREE.InstancedMesh(new THREE.BoxGeometry(.24,PH-.2,.9),mat.travertine,60);let pf=0;
-for(let x=-PX+.3;x<=PX-.3;x+=1.1){if(Math.abs(x)<DW+.4)continue;dm.position.set(x,PH/2,PZ1+.35);dm.scale.set(1,1,1);dm.updateMatrix();pfins.setMatrixAt(pf++,dm.matrix);}
-pfins.count=pf;pfins.castShadow=true;scene.add(pfins);
-box(12,.4,6,mat.concrete,0,DH+.6,PZ1+3);
-box(11,.04,.12,mat.stripLight,0,DH+.38,PZ1+5.6,scene,false);
-for(const s of [-1,1]) box(.12,.04,5,mat.stripLight,s*5.4,DH+.38,PZ1+3,scene,false);
-// lobby floor & ceiling
-plane(PX*2-.5,PZ1-PZ0-.5,mat.marble,0,.03,(PZ0+PZ1)/2);
-const ceil=new THREE.Mesh(new THREE.PlaneGeometry(PX*2-.5,PZ1-PZ0-.5),M({color:0xece6dc,roughness:.9}));ceil.rotation.x=Math.PI/2;ceil.position.set(0,PH-.05,(PZ0+PZ1)/2);scene.add(ceil);
-for(let z=-7;z<=10;z+=4.25) box(30,.05,.14,mat.stripLight,0,PH-.1,z,scene,false);
-// feature wall + logo
-box(20,PH-.3,.2,mat.woodDark,0,PH/2,PZ0+.4);
-const slats=new THREE.InstancedMesh(new THREE.BoxGeometry(.12,PH-.4,.16),mat.wood,70);
-for(let k=0;k<64;k++){dm.position.set(-9.6+k*.305,PH/2,PZ0+.6);dm.updateMatrix();slats.setMatrixAt(k,dm.matrix);}slats.count=64;slats.castShadow=true;scene.add(slats);
-const logo=new THREE.Mesh(new THREE.PlaneGeometry(7.4,1.45),new THREE.MeshBasicMaterial({map:logoTex,transparent:true,toneMapped:false}));logo.position.set(0,4.9,PZ0+.72);scene.add(logo);
-// reception desk
-box(7.2,1.1,1.3,mat.travertine,0,.55,-4);
-box(7.3,.06,1.4,mat.brass,0,1.13,-4);
-box(7.0,.03,.05,mat.stripLight,0,.08,-3.33,scene,false);
-box(3,.75,.6,mat.darkMetal,0,.4,-5.2);
-// chandelier
-const chand=new THREE.InstancedMesh(new THREE.SphereGeometry(.13,12,8),mat.warmLight,90);
-for(let k=0;k<90;k++){const a=R()*Math.PI*2,r=Math.sqrt(R())*3;dm.position.set(Math.cos(a)*r,4.4+R()*2.6,-4+Math.sin(a)*r*.7);dm.scale.setScalar(.6+R()*.7);dm.updateMatrix();chand.setMatrixAt(k,dm.matrix);}
-scene.add(chand);
-const lobbyLights=[[0,5.6,-4,50],[-13,6,4,32],[13,6,1,32],[0,6,7,24]].map(([x,y,z,i])=>{const l=new THREE.PointLight(0xffd3a0,i,34,1.6);l.position.set(x,y,z);scene.add(l);return l;});
-// columns
-for(const [x,z] of [[-8,5],[8,5],[-15,-3],[15,-3]]) cyl(.55,.55,PH,mat.travertine,x,PH/2,z,scene,32);
-// lounge
-function sofa(x,z,rot,parent=scene,len=2.6,m=mat.fabric){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;parent.add(g);
-  box(len,.42,.95,m,0,.21,0,g);box(len,.5,.22,m,0,.62,-.37,g);box(.2,.62,.95,m,-len/2+.1,.31,0,g);box(.2,.62,.95,m,len/2-.1,.31,0,g);
-  for(let k=0;k<3;k++) box(len/3-.1,.14,.72,m,-len/3+k*len/3,.48,.08,g);return g;}
-sofa(-14,7,0);sofa(-14,10.4,Math.PI);sofa(-17.3,8.7,Math.PI/2,scene,2.2);
-plane(6,5,mat.rug,-14.5,.04,8.7);cyl(.7,.7,.4,mat.brass,-14,.2,8.7);
-plant(-20.8,10.8,1.6);plant(20.8,10.8,1.6);plant(-10.5,-9,1.8);plant(10.5,-9,1.8);plant(-20.5,-8.5,1.5);
-// elevators on the right wall
-for(const z of [-6.5,-2.5,1.5]){box(.12,3.2,2,mat.brass,PX-.32,1.6,z);box(.1,3.6,.18,mat.darkMetal,PX-.3,1.8,z-1.08);box(.1,3.6,.18,mat.darkMetal,PX-.3,1.8,z+1.08);box(.1,.25,.8,mat.stripLight,PX-.32,3.6,z,scene,false);}
-
-/* ---------- apartment (separate set, 14th floor) ---------- */
-const A=new THREE.Vector3(600,48,0);
-const apt=new THREE.Group();apt.position.copy(A);scene.add(apt);
-const H=2.85;
-box(16,.4,14.4,mat.concrete,0,-.2,1,apt);
-plane(14,10,mat.woodFloor,0,.005,0,apt);
-plane(3.5,5,mat.tile,5.25,.012,-2.5,apt);
-function wall(ax,az,bx,bz,ops=[],T=.18){
-  const horiz=az===bz;const a0=horiz?Math.min(ax,bx):Math.min(az,bz), a1=horiz?Math.max(ax,bx):Math.max(az,bz);
-  const seg=(s,e,y0,y1)=>{if(e-s<.01||y1-y0<.01)return;const c=(s+e)/2,len=e-s;
-    if(horiz) box(len,y1-y0,T,mat.wallWhite,c,(y0+y1)/2,az,apt); else box(T,y1-y0,len,mat.wallWhite,ax,(y0+y1)/2,c,apt);};
-  const glass=(s,e,y0,y1)=>{const c=(s+e)/2,len=e-s;const g=horiz?box(len,y1-y0,.03,mat.glassWin,c,(y0+y1)/2,az,apt,false):box(.03,y1-y0,len,mat.glassWin,ax,(y0+y1)/2,c,apt,false);g.receiveShadow=false;
-    // slim frame
-    if(horiz){box(len,.05,T+.02,mat.darkMetal,c,y0,az,apt,false);box(len,.05,T+.02,mat.darkMetal,c,y1,az,apt,false);}else{box(T+.02,.05,len,mat.darkMetal,ax,y0,c,apt,false);box(T+.02,.05,len,mat.darkMetal,ax,y1,c,apt,false);}};
-  let cur=a0;ops.sort((p,q)=>p.at-q.at);
-  for(const o of ops){const s=o.at-o.w/2,e=o.at+o.w/2;seg(cur,s,0,H);seg(s,e,0,o.b);seg(s,e,o.t,H);if(o.glass)glass(s,e,o.b,o.t);cur=e;}
-  seg(cur,a1,0,H);
-}
-const W=(at,w,b=.12,t=2.6)=>({at,w,b,t,glass:true}), D=(at,w=.9)=>({at,w,b:0,t:2.15});
-wall(-7.1,5,7.1,5,[W(-5.4,2.6),W(-2.55,2.6),W(2.4,2.4),W(5.3,2.2)],.25);
-wall(-7.1,-5,7.1,-5,[D(2,1.0)],.25);
-wall(-7,-5,-7,5,[W(1.6,2.6,.12,2.6)],.25);
-wall(7,-5,7,5,[W(2.5,2,.6,2.5),W(-3.6,.8,1.5,2.2)],.25);
-wall(.5,-5,.5,5,[D(-2.2,1.2)]);
-wall(.5,0,7,0,[D(2,.9)]);
-wall(3.5,-5,3.5,0,[D(-1,.8)]);
-box(1,2.15,.06,mat.woodDark,2,1.075,-5.05,apt);
-// terrace
-box(14,.05,.05,mat.darkMetal,0,1.05,6.95,apt,false);
-box(14,1,.04,mat.glassRail,0,.55,6.95,apt,false);
-sofa(-4.5,6.1,Math.PI,apt,2,mat.fabricDark);plant(-6.4,6.4,.9,apt);plant(6.4,6.4,.9,apt);cyl(.35,.35,.45,mat.wood,-2.8,.225,6.1,apt);
-// ceiling (only visible in 360)
-const ceiling=new THREE.Group();apt.add(ceiling);
-const cp=new THREE.Mesh(new THREE.PlaneGeometry(14.4,10.4),M({color:0xf4f1ec,roughness:.95}));cp.rotation.x=Math.PI/2;cp.position.set(0,H,0);ceiling.add(cp);
-for(const [x,z] of [[-5,3],[-3,3],[-5,-3],[-3,-3],[-1.5,0],[2,-2.5],[2.5,2.5],[5,2.5],[5.2,-2.5]]){const s=new THREE.Mesh(new THREE.CircleGeometry(.09,16),mat.stripLight);s.rotation.x=Math.PI/2;s.position.set(x,H-.01,z);ceiling.add(s);}
-ceiling.visible=false;
-// living
-box(.42,.5,2.6,mat.woodDark,.18,.25,2.5,apt);
-box(.05,.95,1.65,mat.black,.38,1.45,2.5,apt);
-sofa(-3.1,2.5,Math.PI/2,apt,2.9);
-plane(3.4,2.8,mat.rug,-1.6,.012,2.5,apt);
-box(.75,.32,1.3,mat.counter,-1.6,.2,2.5,apt);
-const arm=sofa(-1.4,4.3,Math.PI,apt,1,mat.fabricDark);
-cyl(.015,.015,1.6,mat.darkMetal,-3.6,.8,4.4,apt,8);const lampS=new THREE.Mesh(new THREE.SphereGeometry(.2,16,12),mat.warmLight);lampS.position.set(-3.6,1.65,4.4);apt.add(lampS);
-plant(-6.5,4.4,1,apt);
-// dining
-box(1,.05,1.9,mat.wood,-5.3,.75,1.4,apt);for(const [dx,dz] of [[-.4,-.85],[.4,-.85],[-.4,.85],[.4,.85]]) box(.05,.73,.05,mat.darkMetal,-5.3+dx,.365,1.4+dz,apt);
-for(const [dx,dz,r] of [[-.75,.9,1],[-.75,1.9,1],[.75,.9,-1],[.75,1.9,-1]]){box(.45,.06,.45,mat.fabricDark,-5.3+dx,.46,dz,apt);box(.05,.5,.42,mat.fabricDark,-5.3+dx-r*.2,.72,dz,apt);for(const lx of [-.18,.18])for(const lz of [-.18,.18])box(.03,.44,.03,mat.darkMetal,-5.3+dx+lx,.22,dz+lz,apt);}
-const pend=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),mat.warmLight);pend.position.set(-5.3,2.05,1.4);apt.add(pend);
-// kitchen
-box(4.4,.88,.62,mat.woodDark,-3.8,.44,-4.58,apt);box(4.44,.04,.66,mat.counter,-3.8,.9,-4.58,apt);
-box(4.4,.8,.36,mat.woodDark,-3.8,2.1,-4.7,apt);box(4.3,.02,.04,mat.stripLight,-3.8,1.68,-4.5,apt,false);
-box(.85,2.2,.66,mat.ceramic,-6.5,1.1,-4.58,apt);
-box(2.4,.88,.95,mat.woodDark,-3.8,.44,-2.5,apt);box(2.6,.04,1.1,mat.counter,-3.8,.9,-2.45,apt);
-for(const x of [-4.6,-3.8,-3]){cyl(.18,.18,.05,mat.fabricDark,x,.75,-1.75,apt);cyl(.02,.02,.72,mat.darkMetal,x,.36,-1.75,apt,8);}
-for(const x of [-4.5,-3.8,-3.1]){const p=new THREE.Mesh(new THREE.SphereGeometry(.1,12,8),mat.warmLight);p.position.set(x,2.15,-2.5);apt.add(p);}
-// bedroom
-box(1.95,.32,2.15,mat.wood,4.6,.2,1.17,apt);box(1.85,.24,2,mat.linen,4.6,.48,1.2,apt);box(1.88,.08,1.3,mat.fabric,4.6,.63,1.6,apt);
-for(const dx of [-.45,.45]) box(.65,.15,.38,mat.linen,4.6+dx,.68,.4,apt);
-box(2.4,1.1,.1,mat.fabricDark,4.6,.85,.15,apt);
-for(const dx of [-1.35,1.35]){box(.5,.48,.42,mat.wood,4.6+dx,.24,.34,apt);const l=new THREE.Mesh(new THREE.SphereGeometry(.1,12,8),mat.warmLight);l.position.set(4.6+dx,.62,.34);apt.add(l);}
-plane(2.8,3,mat.rug,4.6,.012,1.6,apt);
-box(.6,2.4,2.4,mat.wood,.9,1.2,2.6,apt);
-box(.6,.75,1.2,mat.wood,6.5,.375,4.2,apt);plant(6.4,.6,.8,apt);
-// bath
-box(.8,.55,1.7,mat.ceramic,6.5,.275,-3.95,apt);box(.7,.05,1.6,M({color:0xa9c3cf,roughness:.05}),6.5,.52,-3.95,apt,false);
-box(1.2,.5,.48,mat.woodDark,5.2,.55,-.33,apt);box(1.24,.04,.5,mat.counter,5.2,.82,-.33,apt);
-box(1,.8,.02,M({color:0xdde6ea,roughness:.02,metalness:1}),5.2,1.6,-.1,apt,false);
-box(.4,.4,.55,mat.ceramic,6.6,.2,-1.3,apt);box(.4,.4,.18,mat.ceramic,6.6,.55,-1.08,apt);
-// hall
-box(.42,2.3,1.6,mat.wood,.8,1.15,-4,apt);box(.4,.45,1.1,mat.fabric,3.1,.23,-3.2,apt);
-box(.02,1.6,.7,M({color:0xdde6ea,roughness:.02,metalness:1}),3.4,1.3,-2,apt,false);
-// apartment lights
-for(const [x,y,z,i] of [[-2.2,2.4,2.5,9],[-4,2.4,-2.6,8],[4.4,2.4,2.4,7],[5.2,2.4,-2.5,5],[2,2.4,-2.6,4]]){const l=new THREE.PointLight(0xffdcb0,i,12,1.8);l.position.set(x,y,z);apt.add(l);}
-const sun2=new THREE.DirectionalLight(0xffd6a8,3);sun2.position.copy(A).add(sunDir.clone().multiplyScalar(40));sun2.target.position.copy(A);
-sun2.castShadow=true;sun2.shadow.mapSize.set(mobile?1024:2048,mobile?1024:2048);Object.assign(sun2.shadow.camera,{left:-12,right:12,top:12,bottom:-12,near:5,far:90});sun2.shadow.bias=-.0003;sun2.shadow.normalBias=.02;
-scene.add(sun2,sun2.target);
-
-const rooms=[
-  {n:'Mehmonxona',m:'34,6 m²',p:[-4.6,1.6,.4],yaw:.55,hot:[-2.2,1,3.6]},
-  {n:'Oshxona',m:'21,8 m²',p:[-2.2,1.6,-1.2],yaw:-2.2,hot:[-3.8,1.1,-2.4]},
-  {n:'Yotoqxona',m:'26,2 m²',p:[2.4,1.6,3.7],yaw:2.1,hot:[4.6,1,2.2]},
-  {n:'Hammom',m:'9,4 m²',p:[4.4,1.6,-2.6],yaw:1.4,hot:[5.6,1,-2.6]},
-  {n:'Dahliz',m:'12,1 m²',p:[2,1.6,-3.6],yaw:-.4,hot:[2,1,-3.2]},
+/* buildings */
+const B=[
+  {id:'12/1',tab:"12 qavat · 1 podyezd",tag:"Bino turi A",name:"12 qavatli, bir podyezdli uy",
+   text:"Ixcham bir podyezdli uy. Pastki ikki qavat g'isht bilan, yuqorisi och suvoq bilan qoplangan. Har bir xonadonda balkon, burchak xonadonlarda ikki tomonga manzara.",
+   spec:[["Qavatlar","12"],["Podyezd","1"],["Fasad","G'isht va suvoq"],["Balkonlar","Har xonadonda"],["Hovli","Yopiq, mashinasiz"]],
+   imgs:['b12a-front','b12a-lawn','b12a-side','b12a-back']},
+  {id:'12/2',tab:"12 qavat · 2 podyezd",tag:"Bino turi B",name:"12 qavatli, ikki podyezdli uy",
+   text:"Uzunroq ikki podyezdli uy hovlini bir tomondan yopib turadi. Hovli tomondagi xonadonlar bolalar maydonchasi va yashil hududga qaraydi.",
+   spec:[["Qavatlar","12"],["Podyezd","2"],["Fasad","G'isht va suvoq"],["Balkonlar","Naqshli panjara bilan"],["Hovli","Bolalar maydonchasi"]],
+   imgs:['b12b-wide','b12b-corner','b12b-yard','b12b-court']},
+  {id:'16/5',tab:"16 qavat · 5 podyezd",tag:"Bino turi C",name:"16 qavatli, besh podyezdli uy",
+   text:"Majmuaning eng baland binosi. Ko'chaga qaragan birinchi qavatda do'konlar, yuqori qavatlardan shahar manzarasi ochiladi.",
+   spec:[["Qavatlar","16"],["Podyezd","5"],["1-qavat","Do'konlar va xizmatlar"],["Balkonlar","Har xonadonda"],["Avtoturargoh","Ko'cha tomonda"]],
+   imgs:['b16-hero','b16-tower','b16-street','b16-far','b16-pano']},
 ];
+let bi=0,bj=0;
+const tabs=$('#tabs');
+B.forEach((b,i)=>{const t=document.createElement('button');t.role='tab';t.textContent=b.tab;t.onclick=()=>showB(i);tabs.appendChild(t);});
+function showB(i,j=0){bi=i;bj=j;const b=B[i];
+  [...tabs.children].forEach((t,k)=>t.setAttribute('aria-selected',k===i));
+  $('#bTag').textContent=b.tag;$('#bName').textContent=b.name;$('#bText').textContent=b.text;
+  $('#bSpec').innerHTML=b.spec.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+  $('#bFloor').hidden=i!==0;
+  $('#bThumbs').innerHTML=b.imgs.map((k,n)=>`<button aria-label="${IMG[k]}" aria-current="${n===j}"><img src="assets/img/${k}.webp" alt="" loading="lazy"></button>`).join('');
+  [...$('#bThumbs').children].forEach((t,n)=>t.onclick=()=>showImg(n));
+  showImg(j);}
+function showImg(j){bj=j;const k=B[bi].imgs[j];const im=$('#bImg');im.style.opacity=.2;
+  const n=new Image();n.onload=()=>{im.src=n.src;im.alt=IMG[k];im.style.opacity=1;};n.src=`assets/img/${k}.webp`;
+  [...$('#bThumbs').children].forEach((t,n2)=>t.setAttribute('aria-current',n2===j));}
+showB(0);
+const openMain=()=>openLB(ALL.indexOf(B[bi].imgs[bj]));
+$('#bMain').onclick=openMain;$('#bMain').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openMain();}};
 
-/* ---------- camera path ---------- */
-const V=(x,y,z)=>new THREE.Vector3(x,y,z);
-const KA=[
-  [0,    V(0,430,300),   V(0,40,0)],
-  [.12,  V(-70,235,280), V(0,40,0)],
-  [.24,  V(-155,85,185), V(0,30,0)],
-  [.36,  V(-46,30,86),   V(0,32,0)],
-  [.46,  V(-7,6,46),     V(0,5,0)],
-  [.54,  V(0,2.4,18),    V(0,2.2,0)],
-  [.62,  V(0,1.75,6),    V(0,1.6,-6)],
-  [.70,  V(8,1.75,2),    V(21,1.8,-2.5)],
-  [.745, V(16,1.75,-2.2),V(22,1.8,-2.5)],
-];
-const KB=[
-  [.755, V(16,22,20),  V(0,0,0)],
-  [.84,  V(9,13,13),   V(0,0,.3)],
-  [.92,  V(2.5,13,10), V(0,0,.3)],
-  [1,    V(0,14.5,7.5),V(0,0,.3)],
-];
-const mk=(K,i)=>new THREE.CatmullRomCurve3(K.map(k=>k[i]),false,'centripetal');
-const cA=[mk(KA,1),mk(KA,2)], cB=[mk(KB,1),mk(KB,2)];
-const CUT=.75;
-function pose(p,outP,outT){
-  const inA=p<CUT, K=inA?KA:KB, C=inA?cA:cB;
-  let i=0;while(i<K.length-2&&p>=K[i+1][0])i++;
-  const f=clamp((p-K[i][0])/(K[i+1][0]-K[i][0]),0,1);
-  const u=(i+f)/(K.length-1);
-  C[0].getPoint(u,outP);C[1].getPoint(u,outT);
-  if(!inA){ // keep dollhouse framed on narrow screens
-    const k=camera.aspect<1?clamp(1.15/camera.aspect,1,2.3):1;
-    outP.sub(outT).multiplyScalar(k).add(outT);
-    outP.add(A);outT.add(A);
-  }
-}
+/* floor picker (front render 12/1). Floor bands measured on the render at 1200×1600 */
+const FLOORS=12, Y0=1505, FHT=78, X0=118, X1=1108;
+const SR=(()=>{let s=12;return()=>{s=(s*16807)%2147483647;return s/2147483647;};})();
+const TYPES=[["1 xonali","42 m²"],["2 xonali","64 m²"],["3 xonali","86 m²"],["2 xonali","68 m²"]];
+const floors=Array.from({length:FLOORS},(_,i)=>({n:i+1,units:TYPES.map(([r,m],u)=>{const x=SR();return{no:`${i+1}${String(u+1).padStart(2,'0')}`,r,m,st:i<1?'sold':x<.45?'free':x<.62?'res':'sold'};})}));
+const svg=$('#fsvg');
+svg.innerHTML=floors.map(f=>{const y=Y0-f.n*FHT;return `<rect class="fl" data-n="${f.n}" x="${X0}" y="${y}" width="${X1-X0}" height="${FHT}" tabindex="0" role="button" aria-label="${f.n}-qavat"></rect>`;}).join('')
+ +floors.map(f=>`<text x="${X1+14>1160?X1-60:X1+14}" y="${Y0-f.n*FHT+FHT/2+8}" data-t="${f.n}" opacity="0">${f.n}</text>`).join('');
+const fl=$('#fList');fl.innerHTML=floors.map(f=>`<button data-n="${f.n}" aria-label="${f.n}-qavat">${f.n}</button>`).join('');
+const ST={free:"Sotuvda",res:"Bron qilingan",sold:"Sotilgan"};
+function pickFloor(n){const f=floors[n-1];
+  $$('#fsvg rect').forEach(r=>r.classList.toggle('sel',+r.dataset.n===n));
+  $$('#fsvg text').forEach(t=>t.setAttribute('opacity',+t.dataset.t===n?1:0));
+  $$('#fList button').forEach(b=>b.classList.toggle('sel',+b.dataset.n===n));
+  const free=f.units.filter(u=>u.st==='free').length;
+  $('#fNum').textContent=n+'-qavat';
+  $('#fSub').textContent=`${f.units.length} ta xonadon · ${free} tasi sotuvda`;
+  $('#fUnits').innerHTML=f.units.map(u=>`<div class="unit ${u.st}"><b>${u.r}</b><span>№ ${u.no} · ${u.m}</span><em class="${u.st}">${ST[u.st]}</em></div>`).join('');
+  $('#f-floor').value=n;$('#f-bld').selectedIndex=0;}
+svg.addEventListener('click',e=>{const r=e.target.closest('rect');if(r)pickFloor(+r.dataset.n);});
+svg.addEventListener('keydown',e=>{const r=e.target.closest('rect');if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pickFloor(+r.dataset.n);}});
+fl.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pickFloor(+b.dataset.n);});
+pickFloor(7);
 
-/* ---------- HUD wiring ---------- */
-const caps=[...document.querySelectorAll('.cap')];
-const stages=[[0,'Osmon'],[.2,'Majmua'],[.38,'Bino'],[.5,'Kirish'],[.65,'Lobbi'],[.84,'Xonadon'],[.96,'360°']];
-const rail=$('#rail');
-stages.forEach(([t,l])=>{const li=document.createElement('li');li.innerHTML=`<button type="button"><span>${l}</span><i></i></button>`;li.firstChild.onclick=()=>go(t);rail.appendChild(li);});
-const railBtns=[...rail.querySelectorAll('button')];
-document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(+a.dataset.go);}));
-const track=$('#track');
-const maxScroll=()=>track.offsetHeight-innerHeight;
-function go(t){window.scrollTo({top:t*maxScroll(),behavior:reduce?'auto':'smooth'});}
+/* gallery + lightbox */
+const ALL=Object.keys(IMG);
+$('#gal').innerHTML=ALL.map((k,i)=>`<button data-i="${i}" aria-label="${IMG[k]}"><img src="assets/img/${k}.webp" alt="${IMG[k]}" loading="lazy"><span>${IMG[k]}</span></button>`).join('');
+$('#gal').addEventListener('click',e=>{const b=e.target.closest('button');if(b)openLB(+b.dataset.i);});
+let li=0,lastFocus=null;const lb=$('#lb');
+function openLB(i){lastFocus=document.activeElement;lb.hidden=false;document.body.style.overflow='hidden';showLB(i);$('#lbX').focus();}
+function showLB(i){li=(i+ALL.length)%ALL.length;const k=ALL[li];const im=$('#lbImg');im.src=`assets/img/${k}.webp`;
+  const xl=new Image();xl.onload=()=>{if(ALL[li]===k)im.src=xl.src;};xl.src=`assets/img/${k}-xl.webp`;
+  im.alt=IMG[k];$('#lbCap').textContent=IMG[k];$('#lbN').textContent=`${li+1} / ${ALL.length}`;}
+function closeLB(){lb.hidden=true;document.body.style.overflow='';lastFocus&&lastFocus.focus();}
+$('#lbX').onclick=closeLB;$('#lbP').onclick=()=>showLB(li-1);$('#lbNx').onclick=()=>showLB(li+1);
+lb.addEventListener('click',e=>{if(e.target===lb||e.target.classList.contains('stage'))closeLB();});
+addEventListener('keydown',e=>{if(lb.hidden)return;if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')showLB(li-1);if(e.key==='ArrowRight')showLB(li+1);});
+let tx=null;lb.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+lb.addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)showLB(li+(d<0?1:-1));tx=null;});
 
-// floors data
-const FR=rng(42);
-const floors=Array.from({length:NF},(_,i)=>{const n=i+3;const free=Array.from({length:8},()=>FR()<(.25+i*.02));return{n,free};});
-let selFloor=11, hovFloor=-1;
-function renderFloorCard(){const f=floors[selFloor];$('#fcFloor').textContent=`${f.n}-qavat`;$('#fcUnits').innerHTML=f.free.map((x,i)=>`<i class="${x?'free':''}" title="${f.n}-0${i+1}"></i>`).join('');
-  const no=`${f.n}-07`;$('#aptNo').textContent=no;$('#panoApt').textContent=no;}
-renderFloorCard();
-$('#fcGo').onclick=()=>go(.86);
-const fsel=$('#f-floor');fsel.innerHTML=floors.map(f=>`<option ${f.n===14?'selected':''}>${f.n}</option>`).join('');
-
-// hotspots
-const hotsEl=$('#hots');
-const hots=rooms.map((r,i)=>{const b=document.createElement('button');b.className='hot';b.type='button';b.innerHTML=`<span class="dot"></span><span class="lbl">${r.n}<small>${r.m}</small></span>`;b.onclick=()=>enterPano(i);hotsEl.appendChild(b);return b;});
-$('#enterBtn').onclick=()=>enterPano(0);
-
-// pano UI
-const chips=$('#chips');
-rooms.forEach((r,i)=>{const b=document.createElement('button');b.type='button';b.textContent=r.n;b.onclick=()=>enterPano(i);chips.appendChild(b);});
-const mini=$('#mini');
-mini.innerHTML=`<g fill="none" stroke="#a49d93" stroke-width=".18"><rect x="-7" y="-5" width="14" height="10"/><path d="M.5-5V-2.8M.5-1.6V5M.5 0H1.55M2.45 0H7M3.5-5V-1.4M3.5-.6V0"/></g>`+rooms.map((r,i)=>`<circle cx="${r.p[0]}" cy="${-r.p[2]}" r=".45" fill="#c9a46b" opacity=".35" data-i="${i}"/>`).join('')+`<g id="me"><path d="M0 0 L-1.6 -3.2 A3.6 3.6 0 0 1 1.6 -3.2Z" fill="#c9a46b" opacity=".45"/><circle r=".5" fill="#c9a46b"/></g>`;
-const meEl=mini.querySelector('#me');
-
-/* ---------- 360 mode ---------- */
-let pano=null, yaw=0, pitch=0, idle=0, drag=null;
-const fade=$('#fade');
-function fadeTo(fn){fade.classList.add('on');setTimeout(()=>{fn();requestAnimationFrame(()=>requestAnimationFrame(()=>fade.classList.remove('on')));},400);}
-function enterPano(i){
-  fadeTo(()=>{pano=i;const r=rooms[i];camera.position.set(A.x+r.p[0],A.y+r.p[1],A.z+r.p[2]);yaw=r.yaw;pitch=-.06;camera.fov=camera.aspect<1?78:68;camera.updateProjectionMatrix();
-    ceiling.visible=true;document.documentElement.classList.add('pano');$('#pano').hidden=false;$('#hud').hidden=true;
-    $('#panoRoom').textContent=r.n;[...chips.children].forEach((c,k)=>c.classList.toggle('act',k===i));
-    meEl.setAttribute('transform',`translate(${r.p[0]} ${-r.p[2]})`);idle=0;$('#help').style.opacity=1;});
-}
-function exitPano(){fadeTo(()=>{pano=null;ceiling.visible=false;camera.fov=50;camera.updateProjectionMatrix();document.documentElement.classList.remove('pano');$('#pano').hidden=true;$('#hud').hidden=false;});}
-$('#exitBtn').onclick=exitPano;
-addEventListener('keydown',e=>{if(pano===null)return;if(e.key==='Escape')exitPano();if(e.key==='ArrowLeft')yaw+=.12;if(e.key==='ArrowRight')yaw-=.12;if(e.key==='ArrowUp')pitch=clamp(pitch+.08,-1.2,1.2);if(e.key==='ArrowDown')pitch=clamp(pitch-.08,-1.2,1.2);idle=0;});
-addEventListener('wheel',e=>{if(pano===null)return;e.preventDefault();camera.fov=clamp(camera.fov+e.deltaY*.04,35,90);camera.updateProjectionMatrix();},{passive:false});
-
-/* ---------- pointer ---------- */
-const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
-const tip=$('#tip');
-let towerActive=false;
-canvas.addEventListener('pointerdown',e=>{if(pano!==null){drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);$('#help').style.opacity=0;}});
-canvas.addEventListener('pointerup',e=>{drag=null;});
-canvas.addEventListener('pointermove',e=>{
-  if(pano!==null){if(drag){yaw-=(e.clientX-drag.x)*.0042;pitch=clamp(pitch+(e.clientY-drag.y)*.0042,-1.2,1.2);drag={x:e.clientX,y:e.clientY};idle=0;}return;}
-  if(!towerActive||e.pointerType==='touch'){setHover(-1);return;}
-  ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);ray.setFromCamera(ndc,camera);
-  const hit=ray.intersectObjects(bands,false)[0];
-  if(hit){setHover(hit.object.userData.floor);const f=floors[hovFloor];const free=f.free.filter(Boolean).length;
-    tip.innerHTML=`<b>${f.n}-qavat</b><div class="row">Xonadonlar <em>8 ta</em></div><div class="row">Sotuvda <em class="ok">${free} ta</em></div><div class="row">Maydon <em>46–118 m²</em></div>`;
-    tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.hidden=false;}
-  else setHover(-1);
-});
-canvas.addEventListener('click',()=>{if(pano===null&&hovFloor>=0){selFloor=hovFloor;renderFloorCard();}});
-function setHover(i){hovFloor=i;canvas.classList.toggle('hovering',i>=0);if(i<0)tip.hidden=true;}
-
-/* ---------- form ---------- */
+/* form */
 $('#lead').addEventListener('submit',e=>{e.preventDefault();const n=$('#f-name').value.trim(),t=$('#f-tel').value.replace(/\D/g,'');const ok=$('#ok');ok.hidden=false;
-  if(!n||t.length<12){ok.style.color='#e6a58a';ok.textContent="Ism va to'liq telefon raqamini kiriting (+998 va 9 ta raqam).";return;}
-  ok.style.color='';ok.textContent=`Rahmat, ${n}! Bu namuna forma — haqiqiy saytda ariza savdo bo'limiga (Telegram yoki CRM) yetib boradi.`;});
-
-/* ---------- loop ---------- */
-let pS=0, last=performance.now(), first=true;
-const P=new THREE.Vector3(), T=new THREE.Vector3(), tmp=new THREE.Vector3();
-function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);}
-addEventListener('resize',onResize);
-const bar=$('#bar'), hint=$('#hint'), fc=$('#floorcard'), lift=$('#lift'), liftN=$('#liftN'), hud=$('#hud');
-
-function frame(now){
-  requestAnimationFrame(frame);
-  const dt=Math.min((now-last)/1000,.05);last=now;
-  const ms=maxScroll(), y=scrollY;
-  if(y>ms+innerHeight&&!first)return; // canvas fully covered by page content
-  const p=clamp(y/ms,0,1);
-
-  if(pano!==null){
-    idle+=dt;if(idle>2.5&&!drag&&!reduce)yaw-=dt*.06;
-    const cp=Math.cos(pitch);tmp.set(Math.sin(yaw)*cp,Math.sin(pitch),Math.cos(yaw)*cp).add(camera.position);camera.lookAt(tmp);
-    meEl.setAttribute('transform',`translate(${rooms[pano].p[0]} ${-rooms[pano].p[2]}) rotate(${180-yaw*180/Math.PI})`);
-    sky.position.copy(camera.position);renderer.render(scene,camera);return;
-  }
-
-  pS += (p-pS)*(1-Math.exp(-dt*(reduce?20:3.2)));
-  if(Math.abs(p-pS)<1e-4)pS=p;
-  pose(pS,P,T);camera.position.copy(P);camera.lookAt(T);
-  sky.position.copy(camera.position);
-
-  // HUD
-  hud.hidden = y>ms+innerHeight*.1;
-  bar.style.width=(pS*100)+'%';
-  hint.style.opacity=1-smooth(.0,.03,pS);
-  for(const c of caps){const a=+c.dataset.a,b=+c.dataset.b;const o=smooth(a,a+.03,pS)*(1-smooth(b-.03,b,pS));c.style.opacity=o;c.style.transform=`translateY(${(1-o)*16}px)`;c.classList.toggle('on',o>.5);}
-  let act=0;stages.forEach(([t],i)=>{if(pS>=t-.04)act=i;});railBtns.forEach((b,i)=>b.classList.toggle('act',i===act));
-  towerActive=pS>.29&&pS<.46;
-  const fo=smooth(.3,.33,pS)*(1-smooth(.43,.46,pS));fc.style.opacity=fo;fc.style.pointerEvents=fo>.5?'auto':'none';
-  if(!towerActive&&hovFloor>=0)setHover(-1);
-  bands.forEach((b,i)=>{const target=towerActive?(i===hovFloor?.55:i===selFloor?.32:0):0;b.material.opacity+=(target-b.material.opacity)*.2;b.visible=b.material.opacity>.01;});
-  const lo=smooth(.722,.742,pS)*(1-smooth(.758,.778,pS));lift.style.opacity=lo;
-  liftN.textContent=Math.round(1+(floors[selFloor].n-1)*smooth(.735,.765,pS));
-  clouds.visible=camera.position.y>40;
-  // hotspots
-  const ho=smooth(.88,.92,pS);
-  rooms.forEach((r,i)=>{tmp.set(r.hot[0],r.hot[1],r.hot[2]).add(A).project(camera);const el=hots[i];
-    el.style.left=((tmp.x*.5+.5)*innerWidth)+'px';el.style.top=((-tmp.y*.5+.5)*innerHeight)+'px';el.style.opacity=tmp.z<1?ho:0;el.style.pointerEvents=ho>.5?'auto':'none';});
-
-  renderer.render(scene,camera);
-  if(first){first=false;$('#loader').classList.add('gone');}
-}
-requestAnimationFrame(frame);
+  if(!n||t.length<12){ok.style.color='#a0482c';ok.textContent="Ismingizni va to'liq telefon raqamingizni kiriting (+998 va 9 ta raqam).";return;}
+  if(!PROJECT.leadEndpoint){ok.style.color='#a0482c';ok.textContent=`Kechirasiz, onlayn ariza hali ulanmagan. Iltimos, ${PROJECT.phone} raqamiga qo'ng'iroq qiling.`;return;}
+  fetch(PROJECT.leadEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:'+'+t,building:$('#f-bld').value,rooms:$('#f-room').value,floor:$('#f-floor').value})})
+   .then(r=>{if(!r.ok)throw 0;ok.style.color='#3f7a4c';ok.textContent=`Rahmat, ${n}! Savdo bo'limi tez orada qo'ng'iroq qiladi.`;e.target.reset();$('#f-tel').value='+998 ';})
+   .catch(()=>{ok.style.color='#a0482c';ok.textContent=`Ariza yuborilmadi. Iltimos, ${PROJECT.phone} raqamiga qo'ng'iroq qiling.`;});});
 </script>
-
 </body>
 </html>
