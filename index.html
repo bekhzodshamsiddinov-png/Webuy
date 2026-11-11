@@ -476,7 +476,7 @@ $$('#menuList a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remov
 
 /* hero */
 const hv=$('#heroVid');
-if(!reduce){hv.play().catch(()=>{});}
+hv.play().catch(()=>{});
 const hideLoader=()=>$('#ld').classList.add('done');
 hv.addEventListener('playing',hideLoader,{once:true});
 addEventListener('load',()=>setTimeout(hideLoader,300));
@@ -488,7 +488,7 @@ $$('.rv').forEach(el=>io.observe(el));
 
 /* lazy video cards */
 const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;
-  if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src;}if(!reduce)v.play().catch(()=>{});}else v.pause();}),{rootMargin:'200px 0px'});
+  if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src;}v.play().catch(()=>{});}else v.pause();}),{rootMargin:'200px 0px'});
 $$('.card video').forEach(v=>vio.observe(v));
 
 /* scroll-scrubbed films */

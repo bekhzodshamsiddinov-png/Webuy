@@ -41,6 +41,11 @@ button{font:inherit;color:inherit}
 #stage{position:fixed;inset:0;overflow:hidden;touch-action:none;background:#000}
 #media{position:absolute;left:0;top:0;will-change:transform}
 #media img,#media video{position:absolute;inset:0;width:100%;height:100%;display:block}
+#cam,#drift{position:absolute;inset:0}
+#cam{transition:none}
+#cam.fly{transition:transform 1s cubic-bezier(.55,0,.8,.2),filter 1s,opacity .5s .55s;transform:scale(2.4);filter:blur(3px);opacity:0}
+.show #drift{animation:drift 22s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes drift{from{transform:scale(1)}to{transform:scale(1.08)}}
 #vid{opacity:0;transition:opacity .35s}
 #vid.on{opacity:1}
 #still{transition:opacity .5s}
@@ -147,9 +152,11 @@ header>*{pointer-events:auto}
 <div id="load"></div>
 <div id="stage">
   <div id="media">
+    <div id="cam"><div id="drift">
     <img id="still" src="assets/scn/hero.webp" alt="">
     <video id="vid" muted playsinline preload="auto"></video>
     <div id="hots"></div>
+    </div></div>
   </div>
   <div class="vig"></div>
 </div>
@@ -265,8 +272,12 @@ $('#next').onclick=()=>go((cur+1)%S.length);
 /* hotspots */
 function renderHots(){const s=S[cur];
   hotsEl.innerHTML=s.hots.map((h,i)=>`<button class="hot ${h.to?'go':''} ${h.left?'left':''}" style="left:${h.x}%;top:${h.y}%" data-i="${i}"><span class="d"></span><span class="l"><small>${h.s}</small>${h.l}</span></button>`).join('');}
-hotsEl.addEventListener('click',e=>{const b=e.target.closest('.hot');if(!b)return;const h=S[cur].hots[+b.dataset.i];
-  if(h.to)go(idx(h.to));else openCard(h.card);});
+hotsEl.addEventListener('click',e=>{const b=e.target.closest('.hot');if(!b||busy)return;const h=S[cur].hots[+b.dataset.i];
+  if(h.to)fly(h,()=>go(idx(h.to)));else openCard(h.card);});
+const cam=$('#cam');
+function fly(h,next){stage.classList.remove('show');cap.classList.add('hide');preload(h.to);
+  cam.style.transformOrigin=`${h.x}% ${h.y}%`;void cam.offsetWidth;cam.classList.add('fly');setTimeout(next,950);}
+function unfly(){cam.classList.remove('fly');}
 
 function setCap(){const s=S[cur];$('#capK').textContent=`${String(cur+1).padStart(2,'0')} / ${String(S.length).padStart(2,'0')} · ${s.k}`;$('#capT').textContent=s.t;$('#capP').textContent=s.p;}
 function markStrip(){[...sc.children].forEach((b,i)=>{b.setAttribute('aria-current',i===cur);if(i===cur)b.scrollIntoView({block:'nearest',inline:'center',behavior:reduce?'auto':'smooth'});});}
@@ -278,7 +289,7 @@ function preloadNext(){S[cur].hots.forEach(h=>h.to&&preload(h.to));preload(S[(cu
 
 /* transition */
 let endT=null,miniT=null;
-function arrive(){clearTimeout(endT);vid.onended=null;
+function arrive(){clearTimeout(endT);vid.onended=null;vid.onerror=null;unfly();
   const s=S[cur];const im=new Image();im.onload=()=>{still.src=im.src;vid.classList.remove('on');setTimeout(()=>{vid.removeAttribute('src');vid.load();},400);
     renderHots();stage.classList.add('show');cap.classList.remove('hide','mini');clearTimeout(miniT);miniT=setTimeout(()=>cap.classList.add('mini'),5000);$('#skip').classList.remove('on');busy=false;preloadNext();};
   im.src=`assets/scn/${s.id}.webp`;}
@@ -286,9 +297,8 @@ function go(i,force){if(i===cur&&!force)return;closeCard();
   cur=i;busy=true;stage.classList.remove('show');cap.classList.add('hide');markStrip();focusPan();
   setTimeout(setCap,350);
   const id=S[i].id;
-  if(reduce){still.style.opacity=0;setTimeout(()=>{still.style.opacity=1;arrive();},350);return;}
   vid.src=`assets/vid/${id}.mp4`;vid.currentTime=0;
-  const start=()=>{vid.classList.add('on');$('#skip').classList.add('on');};
+  const start=()=>{vid.classList.add('on');unfly();$('#skip').classList.add('on');};
   vid.oncanplay=()=>{vid.oncanplay=null;vid.play().then(start).catch(()=>arrive());};
   vid.onended=arrive;vid.onerror=()=>{if(busy)arrive();};
   endT=setTimeout(()=>{if(busy)arrive();},15000);
