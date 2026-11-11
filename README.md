@@ -24,9 +24,11 @@ Sayt GitHub Pages orqali `gh-pages` branch'idan chiqadi. O'zgarishlar `main`ga p
 | Fayl | Vazifasi |
 |---|---|
 | `index.html` | Bosh sahifa: video hero, scroll bilan boshqariladigan 2 ta film, bino turlari, qavat tanlash, infratuzilma videolari, galereya, forma |
+| `sayohat.html` | Interaktiv kinematik sayohat: 9 sahna, bosiladigan nuqtalar, o'tish videolari, bino kartochkalari. Sahnalar `S` massivida, `sayohat.html#yard` kabi to'g'ridan-to'g'ri havola ishlaydi |
 | `tour.html` | Namunaviy 3D sayohat: bino, lobbi, lift, xonadon, 360° rejim |
 | `assets/img/` | Renderlar: `*.webp` (1100 px) va `*-xl.webp` (2400 px, galereya uchun) |
 | `assets/vid/` | Animatsiyalar (H.264, 1600 px) va ularning poster rasmlari |
+| `assets/scn/` | Sayohat sahnalarining yakuniy kadrlari (1920 px) va kichik nusxalari |
 | `assets/seq/` | Scroll filmlari uchun kadrlar ketma-ketligi (WebP, 20 kadr/s) |
 | `vendor/three/` | three.js r160 (MIT), tashqi CDN'ga bog'liq bo'lmasligi uchun repo ichida |
 

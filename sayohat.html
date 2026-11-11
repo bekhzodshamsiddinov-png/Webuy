@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sayohat · Sadaf Residence</title>
+<meta name="description" content="Majmua bo'ylab interaktiv kinematik sayohat: ko'cha, do'konlar, hovli, bolalar maydonchasi va uylar.">
+<meta name="theme-color" content="#111214">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1c1e'/%3E%3Cpath d='M10 26V7h12v19' fill='none' stroke='%23b08a57' stroke-width='2'/%3E%3Cpath d='M13 11h6M13 15h6M13 19h6' stroke='%23b08a57' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="assets/scn/hero.webp">
+<style>
+/* Layout: one full-screen cinematic stage; glass UI floats on top — caption top-left, hotspots on the picture, scene strip at the bottom, detail card slides in from the right */
+:root{
+  --ink:#111214;
+  --glass:rgba(17,18,20,.62);
+  --glass2:rgba(17,18,20,.82);
+  --paper:#eeebe5;
+  --muted:#a9a39a;
+  --bronze:#a8834f;
+  --bronze-l:#c9a46b;
+  --line:rgba(238,235,229,.16);
+  --display:"Marcellus","Trajan Pro",Georgia,serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --sl:max(18px,env(safe-area-inset-left,0px));
+  --sr:max(18px,env(safe-area-inset-right,0px));
+  --st:env(safe-area-inset-top,0px);
+  --sb:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--ink);color:var(--paper);font:400 15px/1.55 var(--body);overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--bronze-l);outline-offset:3px}
+
+/* stage */
+#stage{position:fixed;inset:0;overflow:hidden;touch-action:none;background:#000}
+#media{position:absolute;left:0;top:0;will-change:transform}
+#media img,#media video{position:absolute;inset:0;width:100%;height:100%;display:block}
+#vid{opacity:0;transition:opacity .35s}
+#vid.on{opacity:1}
+#still{transition:opacity .5s}
+#hots{position:absolute;inset:0}
+.vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,10,12,.55) 0%,rgba(10,10,12,0) 22%,rgba(10,10,12,0) 62%,rgba(10,10,12,.7) 100%)}
+
+/* hotspots */
+.hot{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .45s}
+.show .hot{opacity:1;pointer-events:auto}
+.hot .d{width:34px;height:34px;border-radius:50%;background:rgba(201,164,107,.28);display:grid;place-items:center;flex:none;position:relative}
+.hot .d::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--bronze-l);box-shadow:0 0 0 0 rgba(201,164,107,.7);animation:ping 2.2s infinite}
+.hot .d svg{position:absolute;width:14px;height:14px;opacity:0}
+.hot.go .d::before{width:14px;height:14px;background:#fff}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(201,164,107,.7)}80%,100%{box-shadow:0 0 0 16px rgba(201,164,107,0)}}
+.hot .l{background:var(--glass2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);padding:8px 12px;font-size:13px;white-space:nowrap;transform:translateX(-6px);opacity:.92;transition:.25s;text-align:left}
+.hot .l small{display:block;font:500 9.5px/1.2 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bronze-l);margin-bottom:2px}
+.hot:hover .l,.hot:focus-visible .l{background:var(--bronze);border-color:var(--bronze);color:#fff;transform:none;opacity:1}
+.hot:hover .l small,.hot:focus-visible .l small{color:#fff}
+.hot.left{flex-direction:row-reverse}
+.hot.left .l{transform:translateX(6px);text-align:right}
+
+/* chrome */
+header{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:calc(16px + var(--st)) var(--sr) 0 var(--sl);pointer-events:none}
+header>*{pointer-events:auto}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.logo svg{width:28px;height:28px}
+.logo b{font:400 19px/1 var(--display);letter-spacing:.24em}
+.logo small{display:block;font:500 9px/1 var(--mono);letter-spacing:.3em;opacity:.7;margin-top:5px}
+.hbtns{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border:1px solid rgba(255,255,255,.4);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:500 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#fff;color:var(--ink)}
+.btn.fill{background:var(--bronze);border-color:var(--bronze)}
+.btn.fill:hover{background:#fff;border-color:#fff;color:var(--ink)}
+@media (max-width:600px){.hbtns .btn.sec{display:none}.btn{padding:10px 12px}}
+
+#cap{position:fixed;z-index:5;left:var(--sl);top:calc(84px + var(--st));max-width:min(440px,calc(100% - 36px));pointer-events:none;transition:opacity .5s,transform .5s}
+#cap.hide{opacity:0;transform:translateY(-8px)}
+#cap h1,#cap p{transition:opacity .6s,max-height .6s,margin .6s;max-height:240px;overflow:hidden}
+#cap.mini h1,#cap.mini p{opacity:0;max-height:0;margin:0}
+#cap .k{font:500 10.5px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--bronze-l);display:flex;gap:12px;align-items:center}
+#cap .k::before{content:"";width:28px;height:1px;background:currentColor}
+#cap h1{font:400 clamp(34px,4.4vw,60px)/1 var(--display);margin:12px 0 10px;text-shadow:0 2px 24px rgba(0,0,0,.4);text-wrap:balance}
+#cap p{margin:0;font-weight:300;font-size:15.5px;text-shadow:0 1px 12px rgba(0,0,0,.6);max-width:40ch}
+
+/* strip */
+#strip{position:fixed;z-index:10;left:0;right:0;bottom:0;padding:0 var(--sr) calc(16px + var(--sb)) var(--sl);display:flex;align-items:flex-end;gap:12px;pointer-events:none}
+#strip>*{pointer-events:auto}
+.nav-arrows{display:flex;gap:6px}
+.nav-arrows button{width:44px;height:44px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center}
+.nav-arrows button:hover{background:#fff;color:var(--ink)}
+.nav-arrows svg{width:18px;height:18px}
+#scenes{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:6px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);max-width:100%;min-width:0;margin:0 auto}
+#scenes::-webkit-scrollbar{display:none}
+#scenes button{flex:none;width:112px;border:0;padding:0;background:none;cursor:pointer;text-align:left;opacity:.6;transition:opacity .25s}
+#scenes button:hover,#scenes button[aria-current="true"]{opacity:1}
+#scenes img{width:112px;height:63px;object-fit:cover;display:block;outline:1px solid transparent;outline-offset:-1px}
+#scenes button[aria-current="true"] img{outline:2px solid var(--bronze-l)}
+#scenes span{display:block;font:500 10px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:6px 2px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:700px){#scenes button{width:84px}#scenes img{width:84px;height:48px}.nav-arrows{display:none}}
+
+#pan{position:fixed;z-index:6;left:50%;bottom:calc(118px + var(--sb));transform:translateX(-50%);font:500 10.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;background:var(--glass);padding:10px 14px;border:1px solid var(--line);display:flex;gap:10px;align-items:center;transition:opacity .6s;pointer-events:none;white-space:nowrap}
+#skip{position:fixed;z-index:6;right:var(--sr);bottom:calc(118px + var(--sb));opacity:0;pointer-events:none;transition:opacity .3s}
+#skip.on{opacity:1;pointer-events:auto}
+
+/* card */
+#card{position:fixed;z-index:20;top:0;right:0;bottom:0;width:min(460px,100%);background:rgba(17,18,20,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .5s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding-top:var(--st)}
+#card.on{transform:none}
+#card .top{display:flex;justify-content:space-between;align-items:center;padding:18px 22px 0}
+#card .top .k{font:500 10.5px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--bronze-l)}
+#card .x{width:40px;height:40px;border:1px solid var(--line);background:none;cursor:pointer;font-size:22px;line-height:1}
+#card .x:hover{background:#fff;color:var(--ink)}
+#card .body{overflow-y:auto;padding:14px 22px calc(24px + var(--sb));display:flex;flex-direction:column;gap:18px}
+#card h2{font:400 34px/1.05 var(--display);margin:0;text-wrap:balance}
+#card p{margin:0;color:#cfc9bf}
+#card .big{aspect-ratio:4/3;overflow:hidden;background:#222;position:relative}
+#card .big img{width:100%;height:100%;object-fit:cover;transition:opacity .35s}
+#card .th{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#card .th button{border:0;padding:0;background:none;cursor:pointer;aspect-ratio:1;overflow:hidden;opacity:.55}
+#card .th button[aria-current="true"],#card .th button:hover{opacity:1}
+#card .th img{width:100%;height:100%;object-fit:cover;display:block}
+#card dl{display:grid;grid-template-columns:auto 1fr;margin:0;border-top:1px solid var(--line)}
+#card dt,#card dd{margin:0;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+#card dt{color:var(--muted);padding-right:16px}
+#card dd{text-align:right;font:500 13px var(--mono)}
+#card .acts{display:flex;gap:8px;flex-wrap:wrap}
+#card .soon{border:1px dashed rgba(201,164,107,.5);padding:14px;font-size:13.5px;color:#cfc9bf}
+#card .soon b{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--bronze-l);margin-bottom:6px}
+
+/* intro */
+#intro{position:fixed;inset:0;z-index:30;display:grid;place-items:end start;padding:0 var(--sr) calc(56px + var(--sb)) var(--sl);background:linear-gradient(180deg,rgba(10,10,12,.35),rgba(10,10,12,.2) 40%,rgba(10,10,12,.85));transition:opacity .8s}
+#intro.gone{opacity:0;pointer-events:none}
+#intro .k{font:500 11px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--bronze-l)}
+#intro h1{font:400 clamp(54px,10vw,150px)/.92 var(--display);margin:16px 0 18px}
+#intro p{max-width:46ch;margin:0 0 28px;font-weight:300;font-size:17px}
+#intro .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#intro .btn{padding:16px 24px;font-size:13px}
+#intro .hint{font:500 10.5px/1.4 var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+#load{position:fixed;left:0;top:0;height:2px;background:var(--bronze-l);z-index:40;width:0;transition:width .3s,opacity .5s}
+
+@media (prefers-reduced-motion:reduce){.hot .d::before{animation:none}}
+</style>
+</head>
+<body>
+<div id="load"></div>
+<div id="stage">
+  <div id="media">
+    <img id="still" src="assets/scn/hero.webp" alt="">
+    <video id="vid" muted playsinline preload="auto"></video>
+    <div id="hots"></div>
+  </div>
+  <div class="vig"></div>
+</div>
+
+<header>
+  <a class="logo" href="./" aria-label="Asosiy sahifa">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 28V5h14v23" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12.5 9.5h7M12.5 13.5h7M12.5 17.5h7M12.5 21.5h7" stroke="#b08a57" stroke-width="1.6"/></svg>
+    <span><b data-cfg="short">SADAF</b><small>RESIDENCE</small></span>
+  </a>
+  <div class="hbtns">
+    <a class="btn sec" href="./">Asosiy sahifa</a>
+    <a class="btn fill" href="./#aloqa">Ko'rishga yozilish</a>
+  </div>
+</header>
+
+<div id="cap" class="hide" aria-live="polite"><div class="k" id="capK"></div><h1 id="capT"></h1><p id="capP"></p></div>
+
+<div id="pan" hidden>← Surib atrofga qarang →</div>
+<button class="btn" id="skip">O'tkazib yuborish ⏭</button>
+
+<nav id="strip" aria-label="Sahnalar">
+  <div class="nav-arrows"><button id="prev" aria-label="Oldingi sahna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button><button id="next" aria-label="Keyingi sahna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <div id="scenes"></div>
+</nav>
+
+<aside id="card" aria-hidden="true" aria-label="Ma'lumot">
+  <div class="top"><span class="k" id="cK"></span><button class="x" id="cX" aria-label="Yopish">×</button></div>
+  <div class="body" id="cB"></div>
+</aside>
+
+<div id="intro">
+  <div>
+    <div class="k">Interaktiv sayohat</div>
+    <h1 data-cfg="name">Sadaf Residence</h1>
+    <p>Ko'chadan boshlab do'konlar, hovli, bolalar maydonchasi va uylarni aylanib chiqing. Oltin nuqtalarni bosing — kamera o'sha joyga olib boradi.</p>
+    <div class="row"><button class="btn fill" id="go">Sayohatni boshlash →</button><span class="hint">9 sahna · taxminan 3 daqiqa</span></div>
+  </div>
+</div>
+
+<script>
+const PROJECT={name:"Sadaf Residence",short:"SADAF"};
+document.querySelectorAll('[data-cfg]').forEach(e=>{const v=PROJECT[e.dataset.cfg];if(v)e.textContent=v;});
+
+/* ---------- content ---------- */
+const BLD={
+  b16:{k:"Bino turi C",t:"16 qavatli, besh podyezdli uy",p:"Majmuaning eng baland binosi. Ko'chaga qaragan birinchi qavatda do'konlar, yuqori qavatlardan shahar manzarasi ochiladi.",
+    spec:[["Qavatlar","16"],["Podyezd","5"],["1-qavat","Do'konlar va xizmatlar"],["Balkonlar","Har xonadonda"]],imgs:['b16-hero','b16-tower','b16-street','b16-far','b16-pano']},
+  b12b:{k:"Bino turi B",t:"12 qavatli, ikki podyezdli uy",p:"Ikki podyezdli uy hovlini bir tomondan yopib turadi. Hovli tomondagi xonadonlar bolalar maydonchasiga qaraydi.",
+    spec:[["Qavatlar","12"],["Podyezd","2"],["Fasad","G'isht va suvoq"],["Balkonlar","Naqshli panjara bilan"]],imgs:['b12b-wide','b12b-corner','b12b-yard','b12b-court']},
+  b12a:{k:"Bino turi A",t:"12 qavatli, bir podyezdli uy",p:"Ixcham bir podyezdli uy. Pastki qavatlar g'isht, yuqorisi och suvoq. Har xonadonda balkon.",
+    spec:[["Qavatlar","12"],["Podyezd","1"],["Fasad","G'isht va suvoq"],["Hovli","Yopiq, mashinasiz"]],imgs:['b12a-front','b12a-lawn','b12a-side','b12a-back'],floor:true},
+};
+const INFO={
+  shops:{k:"Savdo",t:"Birinchi qavatdagi do'konlar",p:"Ko'chaga qaragan birinchi qavat to'liq tijorat uchun: katta vitrinalar, alohida kirish joylari va zinapoyalar. Kundalik xaridlar uydan bir necha qadamda.",img:'shops'},
+  parking:{k:"Avtoturargoh",t:"Mashinalar uchun joy",p:"Avtomobillar uylar atrofidagi ko'chalarda turadi. Hovli ichiga mashina kirmaydi, bolalar xavfsiz o'ynaydi.",img:'aerial'},
+  play:{k:"Bolalar",t:"Bolalar maydonchasi",p:"To'siq bilan o'ralgan maydoncha hovli o'rtasida. Yumshoq qoplama, minorali o'yin majmuasi, arg'imchoqlar. Uylarning derazalaridan ko'rinib turadi.",img:'play'},
+  entr:{k:"Podyezd",t:"Hovli tomondan kirish",p:"Podyezdlarga hovli ichidan kiriladi. Zinapoya yonida pandus bor, aravacha bilan ham qulay.",img:'yard'},
+  units:{k:"Xonadonlar",t:"Har qavatda balkonli xonadonlar",p:"Har bir xonadonda balkon bor, naqshli panjaralar quyoshdan soya beradi. Qavatni tanlab, bo'sh xonadonlarni ko'ring.",img:'facade',floor:true,soon:true},
+};
+// x,y in % of the 16:9 frame
+const S=[
+ {id:'hero',k:"Majmua",t:"Ko'chadan ko'rinish",p:"16 qavatli uy majmuaning eng baland nuqtasi. Undan chaproqda 12 qavatli uylar.",
+  hots:[{x:55,y:38,l:"16 qavatli uy",s:"Bino",card:'b:b16'},{x:83,y:57,l:"12 qavatli uylar",s:"Bino",card:'b:b12b'},{x:22,y:80,l:"Ko'cha bo'ylab",s:"O'tish",to:'street',left:true},{x:62,y:83,l:"Hovliga kirish",s:"O'tish",to:'yard'}]},
+ {id:'street',k:"Ko'cha",t:"Keng ko'cha va yashil chiziq",p:"Uylar bo'ylab ikki qatorli yo'l, daraxtlar va maysazor.",
+  hots:[{x:24,y:56,l:"Do'konlar tomon",s:"O'tish",to:'shops',left:true},{x:66,y:68,l:"Avtoturargoh",s:"Ma'lumot",card:'i:parking'},{x:50,y:22,l:"16 qavatli uy",s:"Bino",card:'b:b16'}]},
+ {id:'shops',k:"Do'konlar",t:"Birinchi qavat — savdo",p:"Vitrinali do'konlar ko'chaga qaraydi, har birining alohida kirishi bor.",
+  hots:[{x:52,y:46,l:"Do'konlar",s:"Ma'lumot",card:'i:shops'},{x:62,y:20,l:"Fasad bo'ylab yuqoriga",s:"O'tish",to:'facade'},{x:30,y:76,l:"Hovli tomon",s:"O'tish",to:'yard',left:true}]},
+ {id:'facade',k:"Fasad",t:"Naqshli panjara va keng balkonlar",p:"Har bir xonadonda balkon. Panjaralar soya beradi va fasadga milliy ohang qo'shadi.",
+  hots:[{x:46,y:70,l:"Xonadonlar",s:"Qavat tanlash",card:'i:units'},{x:50,y:46,l:"12 qavatli uy",s:"Bino",card:'b:b12a'}]},
+ {id:'yard',k:"Hovli",t:"Mashinasiz yopiq hovli",p:"Uylar orasidagi hovli faqat odamlar uchun: yo'laklar, butalar va daraxtlar.",
+  hots:[{x:19,y:55,l:"Bolalar maydonchasi",s:"O'tish",to:'play',left:true},{x:48,y:14,l:"Hovli ustidan",s:"O'tish",to:'aerial'},{x:86,y:76,l:"Podyezd",s:"Ma'lumot",card:'i:entr'},{x:40,y:30,l:"12 qavatli uy",s:"Bino",card:'b:b12b'}]},
+ {id:'play',k:"Bolalar",t:"Ko'z oldidagi maydoncha",p:"Maydoncha hovli o'rtasida, ota-onalar balkondan kuzatib turadi.",
+  hots:[{x:69,y:68,l:"Maydoncha",s:"Ma'lumot",card:'i:play'},{x:22,y:52,l:"Ravoq orqali",s:"O'tish",to:'arch',left:true},{x:86,y:30,l:"Yuqoridan ko'rish",s:"O'tish",to:'aerial'}]},
+ {id:'arch',k:"Ravoq",t:"Gulzorli kirish yo'li",p:"Hovliga ravoqlar va gulzor orqali kiriladi. Orqada 12 qavatli bir podyezdli uy.",
+  hots:[{x:40,y:36,l:"12 qavatli uy",s:"Bino",card:'b:b12a'},{x:86,y:44,l:"Orqa tomon",s:"O'tish",to:'back'},{x:14,y:62,l:"Maydonchaga qaytish",s:"O'tish",to:'play',left:true}]},
+ {id:'aerial',k:"Yuqoridan",t:"Hovli ustidan",p:"Bolalar maydonchasi markazda, avtoturargoh esa tashqarida — hovli ichiga mashina kirmaydi.",
+  hots:[{x:58,y:56,l:"Bolalar maydonchasi",s:"O'tish",to:'play'},{x:26,y:22,l:"Avtoturargoh",s:"Ma'lumot",card:'i:parking',left:true},{x:12,y:62,l:"Hovliga tushish",s:"O'tish",to:'yard',left:true}]},
+ {id:'back',k:"Orqa tomon",t:"Maysazor tomondagi fasad",p:"12 qavatli uyning orqa tomoni keng maysazor va daraxtlarga qaraydi.",
+  hots:[{x:55,y:38,l:"12 qavatli uy",s:"Bino",card:'b:b12a'},{x:14,y:84,l:"Boshiga qaytish",s:"O'tish",to:'hero',left:true}]},
+];
+const idx=id=>S.findIndex(s=>s.id===id);
+
+/* ---------- elements ---------- */
+const $=s=>document.querySelector(s);
+const stage=$('#stage'),media=$('#media'),still=$('#still'),vid=$('#vid'),hotsEl=$('#hots'),cap=$('#cap');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let cur=0,busy=false,panX=0,panMax=0;
+
+/* cover layout + horizontal pan for portrait screens */
+function layout(){
+  const W=innerWidth,H=innerHeight,r=16/9;let w=W,h=W/r;if(h<H){h=H;w=H*r;}
+  panMax=Math.max(0,(w-W)/2);panX=Math.max(-panMax,Math.min(panMax,panX));
+  media.style.width=w+'px';media.style.height=h+'px';
+  media.style.transform=`translate(${(W-w)/2+panX}px,${(H-h)/2}px)`;
+  $('#pan').hidden=panMax<innerWidth*.15;
+}
+function focusPan(){ // center the scene's hotspots on narrow screens
+  const s=S[cur];if(!s.hots.length)return;const W=innerWidth,H=innerHeight;let w=W,h=W*9/16;if(h<H){h=H;w=H*16/9;}
+  const ax=s.hots.reduce((a,b)=>a+b.x,0)/s.hots.length/100;panX=(0.5-ax)*w;layout();}
+addEventListener('resize',layout);
+let drag=null;
+stage.addEventListener('pointerdown',e=>{if(panMax<1||e.target.closest('.hot'))return;drag={x:e.clientX,p:panX};stage.setPointerCapture(e.pointerId);});
+stage.addEventListener('pointermove',e=>{if(!drag)return;panX=drag.p+(e.clientX-drag.x);layout();$('#pan').style.opacity=0;});
+stage.addEventListener('pointerup',()=>drag=null);stage.addEventListener('pointercancel',()=>drag=null);
+
+/* strip */
+const sc=$('#scenes');
+sc.innerHTML=S.map((s,i)=>`<button data-i="${i}" aria-label="${s.t}"><img src="assets/scn/${s.id}-t.webp" alt=""><span>${String(i+1).padStart(2,'0')} ${s.k}</span></button>`).join('');
+sc.addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i);});
+$('#prev').onclick=()=>go((cur-1+S.length)%S.length);
+$('#next').onclick=()=>go((cur+1)%S.length);
+
+/* hotspots */
+function renderHots(){const s=S[cur];
+  hotsEl.innerHTML=s.hots.map((h,i)=>`<button class="hot ${h.to?'go':''} ${h.left?'left':''}" style="left:${h.x}%;top:${h.y}%" data-i="${i}"><span class="d"></span><span class="l"><small>${h.s}</small>${h.l}</span></button>`).join('');}
+hotsEl.addEventListener('click',e=>{const b=e.target.closest('.hot');if(!b)return;const h=S[cur].hots[+b.dataset.i];
+  if(h.to)go(idx(h.to));else openCard(h.card);});
+
+function setCap(){const s=S[cur];$('#capK').textContent=`${String(cur+1).padStart(2,'0')} / ${String(S.length).padStart(2,'0')} · ${s.k}`;$('#capT').textContent=s.t;$('#capP').textContent=s.p;}
+function markStrip(){[...sc.children].forEach((b,i)=>{b.setAttribute('aria-current',i===cur);if(i===cur)b.scrollIntoView({block:'nearest',inline:'center',behavior:reduce?'auto':'smooth'});});}
+
+/* preload neighbour clips */
+const pre={};
+function preload(id){if(pre[id])return;const v=document.createElement('video');v.preload='auto';v.muted=true;v.src=`assets/vid/${id}.mp4`;v.load();pre[id]=v;}
+function preloadNext(){S[cur].hots.forEach(h=>h.to&&preload(h.to));preload(S[(cur+1)%S.length].id);}
+
+/* transition */
+let endT=null,miniT=null;
+function arrive(){clearTimeout(endT);vid.onended=null;
+  const s=S[cur];const im=new Image();im.onload=()=>{still.src=im.src;vid.classList.remove('on');setTimeout(()=>{vid.removeAttribute('src');vid.load();},400);
+    renderHots();stage.classList.add('show');cap.classList.remove('hide','mini');clearTimeout(miniT);miniT=setTimeout(()=>cap.classList.add('mini'),5000);$('#skip').classList.remove('on');busy=false;preloadNext();};
+  im.src=`assets/scn/${s.id}.webp`;}
+function go(i,force){if(i===cur&&!force)return;closeCard();
+  cur=i;busy=true;stage.classList.remove('show');cap.classList.add('hide');markStrip();focusPan();
+  setTimeout(setCap,350);
+  const id=S[i].id;
+  if(reduce){still.style.opacity=0;setTimeout(()=>{still.style.opacity=1;arrive();},350);return;}
+  vid.src=`assets/vid/${id}.mp4`;vid.currentTime=0;
+  const start=()=>{vid.classList.add('on');$('#skip').classList.add('on');};
+  vid.oncanplay=()=>{vid.oncanplay=null;vid.play().then(start).catch(()=>arrive());};
+  vid.onended=arrive;vid.onerror=()=>{if(busy)arrive();};
+  endT=setTimeout(()=>{if(busy)arrive();},15000);
+}
+$('#skip').onclick=arrive;
+
+/* card */
+const card=$('#card'),cB=$('#cB');
+function openCard(ref){const [t,k]=ref.split(':');let html='';
+  if(t==='b'){const b=BLD[k];$('#cK').textContent=b.k;
+    html=`<h2>${b.t}</h2><div class="big"><img id="cBig" src="assets/img/${b.imgs[0]}.webp" alt="${b.t}"></div>
+    <div class="th">${b.imgs.map((m,i)=>`<button data-m="${m}" aria-current="${i===0}" aria-label="Rasm ${i+1}"><img src="assets/img/${m}.webp" alt=""></button>`).join('')}</div>
+    <p>${b.p}</p><dl>${b.spec.map(([a,v])=>`<dt>${a}</dt><dd>${v}</dd>`).join('')}</dl>
+    <div class="acts"><a class="btn fill" href="./#aloqa">Narxni bilish</a>${b.floor?'<a class="btn" href="./#qavat">Qavat tanlash</a>':''}</div>`;}
+  else{const n=INFO[k];$('#cK').textContent=n.k;
+    html=`<h2>${n.t}</h2><div class="big"><img src="assets/scn/${n.img}.webp" alt=""></div><p>${n.p}</p>
+    ${n.soon?'<div class="soon"><b>Tez orada</b>Xonadon ichiga kirish va xonalarni 360° ko\'rish shu yerga qo\'shiladi.</div>':''}
+    <div class="acts">${n.floor?'<a class="btn fill" href="./#qavat">Qavat tanlash</a>':'<a class="btn fill" href="./#aloqa">Ko\'rishga yozilish</a>'}<a class="btn" href="tour.html">3D xonadon</a></div>`;}
+  cB.innerHTML=html;cB.scrollTop=0;card.classList.add('on');card.setAttribute('aria-hidden','false');$('#cX').focus();
+  cB.querySelectorAll('.th button').forEach(b=>b.onclick=()=>{$('#cBig').src=`assets/img/${b.dataset.m}.webp`;cB.querySelectorAll('.th button').forEach(x=>x.setAttribute('aria-current',x===b));});}
+function closeCard(){card.classList.remove('on');card.setAttribute('aria-hidden','true');}
+$('#cX').onclick=closeCard;
+
+addEventListener('keydown',e=>{if(e.key==='Escape')closeCard();if($('#intro').classList.contains('gone')&&!card.classList.contains('on')){if(e.key==='ArrowRight')$('#next').click();if(e.key==='ArrowLeft')$('#prev').click();}});
+
+/* intro + loading bar for the first clip */
+layout();focusPan();
+const bar=$('#load');preload('hero');
+const pv=pre.hero;pv.addEventListener('progress',()=>{try{const b=pv.buffered;if(b.length)bar.style.width=Math.min(100,b.end(b.length-1)/pv.duration*100)+'%';}catch(e){}});
+pv.addEventListener('canplaythrough',()=>{bar.style.width='100%';setTimeout(()=>bar.style.opacity=0,400);},{once:true});
+$('#go').onclick=()=>{$('#intro').classList.add('gone');$('#go').blur();go(0,true);};
+// deep link: sayohat.html#yard
+const h=location.hash.slice(1);if(h&&idx(h)>=0){$('#intro').classList.add('gone');cur=idx(h);go(cur,true);}
+</script>
+</body>
+</html>
